@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for medical interface */
+.medical-card {
+  @apply bg-white rounded-lg shadow-lg border border-medical-200 p-6;
+}
+
+.risk-indicator {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.risk-low {
+  @apply bg-green-100 text-green-800;
+}
+
+.risk-moderate {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.risk-high {
+  @apply bg-red-100 text-red-800;
+}
+
+.upload-zone {
+  @apply border-2 border-dashed border-medical-300 rounded-lg p-6 text-center hover:border-medical-500 transition-colors;
+}
+
+.upload-zone.active {
+  @apply border-medical-500 bg-medical-50;
+}
+
+.chat-message {
+  @apply p-3 rounded-lg max-w-xs;
+}
+
+.chat-user {
+  @apply bg-medical-500 text-white ml-auto;
+}
+
+.chat-bot {
+  @apply bg-gray-100 text-gray-900 mr-auto;
+}
+
+/* Loading animations */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.loading-shimmer {
+  animation: shimmer 1.5s ease-in-out infinite;
+  background: linear-gradient(to right, #eff6ff 8%, #dbeafe 18%, #eff6ff 33%);
+  background-size: 800px 104px;
+}
+
+/* Custom scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Professional medical animations and effects */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes medicalGlow {
+  0%, 100% {
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  }
+}
+
+/* Medical interface animations */
+.medical-fade-in {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.medical-slide-in {
+  animation: slideInLeft 0.4s ease-out;
+}
+
+.medical-glow {
+  animation: medicalGlow 2s ease-in-out infinite;
+}
+
+/* Professional hover effects */
+.medical-button:hover {
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+.medical-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
