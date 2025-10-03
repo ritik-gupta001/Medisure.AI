@@ -329,7 +329,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ##  Support
 
-- ** Email**: support@medisense-ai.com
+- ** Email**: rg4092739@gmail.com
 - ** Issues**: [GitHub Issues](https://github.com/ritik-gupta001/medisense-ai/issues)
 - **💬 Discussions**: [GitHub Discussions](https://github.com/ritik-gupta001/medisense-ai/discussions)
 
@@ -350,6 +350,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ![React](https://img.shields.io/badge/React-18.0-61dafb?style=flat-square&logo=react)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688?style=flat-square&logo=fastapi)
 
-Made with  for Healthcare Professionals
 
 </div>
