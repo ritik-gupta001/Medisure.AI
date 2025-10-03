@@ -2,19 +2,52 @@ import React, { useState } from 'react';
 import { MedicalIcons, MedicalGradients } from './MedicalIcons';
 import VitalCharts from './VitalCharts';
 import RiskGauge from './RiskGauge';
+import AIChatInterface from './AIChatInterface';
+import apiService from '../services/api';
 
 const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [uploadHistory, setUploadHistory] = useState([]);
+  const [apiHealth, setApiHealth] = useState(null);
+  const [aiStatus, setAiStatus] = useState(null);
+  const [showAIChat, setShowAIChat] = useState(false);
+  const [healthInsights, setHealthInsights] = useState(null);
+
+  // Check API health and AI status on component mount
+  React.useEffect(() => {
+    const checkServices = async () => {
+      try {
+        const [health, aiStatusData] = await Promise.all([
+          apiService.checkHealth(),
+          apiService.checkAIStatus()
+        ]);
+        setApiHealth(health);
+        setAiStatus(aiStatusData);
+      } catch (error) {
+        console.error('Failed to check API services:', error);
+      }
+    };
+    checkServices();
+  }, []);
 
   const addToHistory = (analysisData) => {
     const historyItem = {
       id: Date.now(),
       timestamp: new Date().toLocaleString(),
       summary: analysisData.patient_summary?.key_findings?.[0] || 'Medical Analysis',
-      data: analysisData
+      data: analysisData,
+      analysisType: analysisData.analysis_type || 'Unknown'
     };
     setUploadHistory(prev => [historyItem, ...prev.slice(0, 9)]); // Keep last 10
+  };
+
+  const generateHealthInsights = async (analysisData) => {
+    try {
+      const insights = await apiService.getHealthInsights(analysisData);
+      setHealthInsights(insights.insights);
+    } catch (error) {
+      console.error('Failed to generate health insights:', error);
+    }
   };
 
   React.useEffect(() => {
@@ -50,7 +83,7 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
           <MedicalIcons.Brain />
           <div style={{marginLeft: '12px'}}>
             <h2 style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', margin: 0}}>
-              MediSense AI
+              MediSure AI
             </h2>
             <p style={{fontSize: '0.8rem', color: '#6b7280', margin: 0}}>
               Medical Analysis Dashboard
@@ -186,28 +219,46 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
               {key: 'overview', label: 'Overview', icon: MedicalIcons.Analysis},
               {key: 'vitals', label: 'Vital Charts', icon: MedicalIcons.HeartRate},
               {key: 'conditions', label: 'Conditions', icon: MedicalIcons.Stethoscope},
-              {key: 'recommendations', label: 'Recommendations', icon: MedicalIcons.RecommendationIcon}
+              {key: 'recommendations', label: 'Recommendations', icon: MedicalIcons.RecommendationIcon},
+              {key: 'chat', label: 'AI Assistant', icon: MedicalIcons.Brain, 
+               isNew: aiStatus?.api_key_configured, 
+               disabled: false} // Always enable chat tab
             ].map(tab => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
+                disabled={tab.disabled}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   gap: '8px',
                   padding: '10px 12px',
                   background: activeTab === tab.key ? MedicalGradients.primary : 'transparent',
-                  color: activeTab === tab.key ? 'white' : '#374151',
+                  color: activeTab === tab.key ? 'white' : tab.disabled ? '#9ca3af' : '#374151',
                   border: 'none',
                   borderRadius: '8px',
-                  cursor: 'pointer',
+                  cursor: tab.disabled ? 'not-allowed' : 'pointer',
                   fontSize: '0.9rem',
                   fontWeight: '500',
-                  textAlign: 'left'
+                  textAlign: 'left',
+                  opacity: tab.disabled ? 0.5 : 1,
+                  position: 'relative'
                 }}
               >
                 <tab.icon />
                 {tab.label}
+                {tab.isNew && (
+                  <span style={{
+                    background: '#10b981',
+                    color: 'white',
+                    fontSize: '0.7rem',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                    marginLeft: 'auto'
+                  }}>
+                    NEW
+                  </span>
+                )}
               </button>
             ))}
           </div>
@@ -259,7 +310,7 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
           }}>
             <MedicalIcons.Brain />
             <h2 style={{fontSize: '2rem', color: '#1f2937', marginTop: '20px'}}>
-              Welcome to MediSense AI
+              Welcome to MediSure AI
             </h2>
             <p style={{fontSize: '1.1rem', color: '#6b7280', marginTop: '12px'}}>
               Upload a medical report or try our demo to get started with intelligent medical analysis
@@ -270,7 +321,11 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
         {analysis && (
           <div>
             {activeTab === 'overview' && (
-              <DashboardOverview analysis={analysis} />
+              <DashboardOverview 
+                analysis={analysis} 
+                onGenerateInsights={() => generateHealthInsights(analysis)}
+                healthInsights={healthInsights}
+              />
             )}
             {activeTab === 'vitals' && (
               <VitalCharts analysis={analysis} />
@@ -281,6 +336,49 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
             {activeTab === 'recommendations' && (
               <RecommendationsPanel analysis={analysis} />
             )}
+            {activeTab === 'chat' && (
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                borderRadius: '20px',
+                padding: '24px',
+                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                backdropFilter: 'blur(10px)'
+              }}>
+                <div style={{marginBottom: '20px'}}>
+                  <h2 style={{fontSize: '1.8rem', color: '#1f2937', marginBottom: '8px'}}>
+                    AI Medical Assistant
+                  </h2>
+                  <p style={{color: '#6b7280'}}>
+                    Ask questions about your medical report, get health advice, or discuss your results with our AI assistant.
+                  </p>
+                </div>
+                <AIChatInterface 
+                  analysisContext={analysis}
+                  onInsightGenerated={setHealthInsights}
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Show AI Chat even without analysis */}
+        {!analysis && activeTab === 'chat' && (
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.95)',
+            borderRadius: '20px',
+            padding: '24px',
+            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div style={{marginBottom: '20px'}}>
+              <h2 style={{fontSize: '1.8rem', color: '#1f2937', marginBottom: '8px'}}>
+                AI Medical Assistant
+              </h2>
+              <p style={{color: '#6b7280'}}>
+                Get answers to your health questions, learn about medical conditions, or discuss general health topics.
+              </p>
+            </div>
+            <AIChatInterface />
           </div>
         )}
       </div>
@@ -330,7 +428,8 @@ const DashboardOverview = ({ analysis }) => {
           <h3 style={{fontSize: '1.3rem', fontWeight: '600', color: '#1f2937', marginBottom: '16px'}}>
             Key Findings Summary
           </h3>
-          {analysis.patient_summary?.key_findings?.slice(0, 3).map((finding, index) => (
+          {/* Handle both LLM and legacy analysis structures */}
+          {(analysis.findings || analysis.patient_summary?.key_findings || []).slice(0, 3).map((finding, index) => (
             <div key={index} style={{
               display: 'flex',
               alignItems: 'flex-start',
@@ -340,11 +439,43 @@ const DashboardOverview = ({ analysis }) => {
               borderRadius: '8px'
             }}>
               <MedicalIcons.NumberBadge number={index + 1} />
-              <span style={{marginLeft: '12px', color: '#374151', fontSize: '0.9rem'}}>
-                {typeof finding === 'string' ? finding : String(finding)}
-              </span>
+              <div style={{marginLeft: '12px', flex: 1}}>
+                <p style={{fontWeight: '500', color: '#374151', margin: '0 0 4px 0'}}>
+                  {finding.description || finding.name || finding.finding || 'Medical Finding'}
+                </p>
+                <p style={{color: '#6b7280', fontSize: '0.9rem', margin: 0}}>
+                  {finding.interpretation || finding.value || finding.detail || 'Analysis available'}
+                </p>
+                {/* Show severity if available */}
+                {finding.severity && (
+                  <span style={{
+                    display: 'inline-block',
+                    marginTop: '4px',
+                    padding: '2px 8px',
+                    fontSize: '0.75rem',
+                    borderRadius: '12px',
+                    background: finding.severity === 'critical' ? '#fee2e2' : finding.severity === 'moderate' ? '#fef3c7' : '#f0fdf4',
+                    color: finding.severity === 'critical' ? '#dc2626' : finding.severity === 'moderate' ? '#d97706' : '#15803d'
+                  }}>
+                    {finding.severity}
+                  </span>
+                )}
+              </div>
             </div>
           ))}
+          
+          {/* Show message if no findings */}
+          {!(analysis.findings || analysis.patient_summary?.key_findings)?.length && (
+            <div style={{
+              padding: '16px',
+              background: '#f3f4f6',
+              borderRadius: '8px',
+              textAlign: 'center',
+              color: '#6b7280'
+            }}>
+              {analysis.summary || 'Analysis completed - detailed results available in other tabs'}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -353,6 +484,9 @@ const DashboardOverview = ({ analysis }) => {
 
 // Conditions Panel Component
 const ConditionsPanel = ({ analysis }) => {
+  // Handle both LLM and legacy analysis structures
+  const conditions = analysis.findings || analysis.patient_summary?.detected_conditions || [];
+  
   return (
     <div style={{
       background: 'rgba(255, 255, 255, 0.95)',
@@ -362,10 +496,10 @@ const ConditionsPanel = ({ analysis }) => {
       backdropFilter: 'blur(10px)'
     }}>
       <h2 style={{fontSize: '1.8rem', fontWeight: 'bold', color: '#1f2937', marginBottom: '24px'}}>
-        Detected Medical Conditions
+        Medical Findings & Conditions
       </h2>
       
-      {analysis.patient_summary?.detected_conditions?.map((condition, index) => (
+      {conditions.length > 0 ? conditions.map((condition, index) => (
         <div key={index} style={{
           marginBottom: '20px',
           padding: '20px',
@@ -375,7 +509,7 @@ const ConditionsPanel = ({ analysis }) => {
         }}>
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px'}}>
             <h4 style={{fontWeight: '600', color: '#1f2937', margin: 0, fontSize: '1.1rem'}}>
-              {condition.name}
+              {condition.name || condition.description || condition.finding || 'Medical Finding'}
             </h4>
             <div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
               <span style={{
@@ -383,17 +517,17 @@ const ConditionsPanel = ({ analysis }) => {
                 borderRadius: '12px',
                 fontSize: '0.8rem',
                 fontWeight: '500',
-                background: condition.confidence === 'High' ? '#fee2e2' : '#fef3c7',
-                color: condition.confidence === 'High' ? '#991b1b' : '#92400e'
+                background: (condition.confidence === 'High' || condition.severity === 'High') ? '#fee2e2' : '#fef3c7',
+                color: (condition.confidence === 'High' || condition.severity === 'High') ? '#991b1b' : '#92400e'
               }}>
-                {condition.confidence} Confidence
+                {condition.confidence || condition.severity || 'Detected'}
               </span>
             </div>
           </div>
           <p style={{color: '#374151', marginBottom: '12px', lineHeight: '1.5'}}>
-            {condition.explanation}
+            {condition.explanation || condition.interpretation || condition.detail || 'Medical analysis available'}
           </p>
-          {condition.management && (
+          {(condition.management || condition.recommendation) && (
             <div style={{
               padding: '12px',
               background: 'rgba(255, 255, 255, 0.8)',
@@ -401,21 +535,34 @@ const ConditionsPanel = ({ analysis }) => {
               fontSize: '0.9rem',
               color: '#4b5563'
             }}>
-              <strong>Management:</strong> {condition.management}
+              <strong>Management:</strong> {condition.management || condition.recommendation}
             </div>
           )}
         </div>
-      ))}
+      )) : (
+        <div style={{
+          padding: '40px',
+          textAlign: 'center',
+          color: '#6b7280',
+          fontSize: '1.1rem'
+        }}>
+          No specific conditions detected in the analysis
+        </div>
+      )}
     </div>
   );
 };
 
 // Recommendations Panel Component
 const RecommendationsPanel = ({ analysis }) => {
+  // Handle both LLM and legacy analysis structures
+  const recommendations = analysis.recommendations || analysis.patient_summary?.recommendations || [];
+  const lifestyleModifications = analysis.lifestyle_modifications || analysis.patient_summary?.lifestyle_modifications || [];
+  
   return (
     <div style={{display: 'flex', flexDirection: 'column', gap: '24px'}}>
       {/* Recommendations */}
-      {analysis.patient_summary?.recommendations && (
+      {recommendations.length > 0 && (
         <div style={{
           background: 'rgba(255, 255, 255, 0.95)',
           borderRadius: '16px',
@@ -427,7 +574,7 @@ const RecommendationsPanel = ({ analysis }) => {
             Personalized Recommendations
           </h3>
           <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-            {analysis.patient_summary.recommendations.map((rec, index) => (
+            {recommendations.map((rec, index) => (
               <div key={index} style={{
                 display: 'flex',
                 alignItems: 'flex-start',
@@ -438,7 +585,7 @@ const RecommendationsPanel = ({ analysis }) => {
               }}>
                 <MedicalIcons.CheckIcon />
                 <span style={{marginLeft: '12px', color: '#1f2937'}}>
-                  {typeof rec === 'string' ? rec : String(rec)}
+                  {typeof rec === 'string' ? rec : rec.description || rec.recommendation || String(rec)}
                 </span>
               </div>
             ))}
@@ -447,7 +594,7 @@ const RecommendationsPanel = ({ analysis }) => {
       )}
 
       {/* Lifestyle Modifications */}
-      {analysis.patient_summary?.lifestyle_modifications && (
+      {lifestyleModifications.length > 0 && (
         <div style={{
           background: 'rgba(255, 255, 255, 0.95)',
           borderRadius: '16px',
@@ -459,7 +606,7 @@ const RecommendationsPanel = ({ analysis }) => {
             Lifestyle Modifications
           </h3>
           <div style={{display: 'flex', flexDirection: 'column', gap: '12px'}}>
-            {analysis.patient_summary.lifestyle_modifications.map((mod, index) => (
+            {lifestyleModifications.map((mod, index) => (
               <div key={index} style={{
                 display: 'flex',
                 alignItems: 'flex-start',
@@ -469,10 +616,28 @@ const RecommendationsPanel = ({ analysis }) => {
                 border: '1px solid #bfdbfe'
               }}>
                 <MedicalIcons.LifestyleIcon />
-                <span style={{marginLeft: '12px', color: '#1f2937'}}>{mod}</span>
+                <span style={{marginLeft: '12px', color: '#1f2937'}}>
+                  {typeof mod === 'string' ? mod : mod.description || mod.modification || String(mod)}
+                </span>
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Show message if no recommendations */}
+      {recommendations.length === 0 && lifestyleModifications.length === 0 && (
+        <div style={{
+          background: 'rgba(255, 255, 255, 0.95)',
+          borderRadius: '16px',
+          padding: '40px',
+          textAlign: 'center',
+          color: '#6b7280',
+          fontSize: '1.1rem',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          backdropFilter: 'blur(10px)'
+        }}>
+          No specific recommendations available in the current analysis
         </div>
       )}
     </div>

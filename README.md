@@ -34,7 +34,29 @@ An advanced AI-powered medical document analysis platform that transforms tradit
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### 1. Configure API Key
+Edit the `.env` file and add your OpenAI API key:
+```env
+OPENAI_API_KEY=your-actual-api-key-here
+```
+
+### 2. Start the Application
+```powershell
+.\start_medisure.ps1
+```
+
+### 3. Access the Application
+- Open browser to `http://localhost:3000`
+- Upload medical PDF documents or try the demo
+- Use the AI chat assistant for medical questions
+
+## ✨ Key Features
+- 🔍 AI-powered medical document analysis
+- 📊 Comprehensive health reports  
+- 💬 Smart medical chat assistant
+- 📈 Risk assessment and recommendations
+
+## Prerequisites
 
 - **Python 3.8+**
 - **Node.js 14+**

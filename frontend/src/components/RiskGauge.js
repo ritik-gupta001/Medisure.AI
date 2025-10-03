@@ -6,19 +6,33 @@ import { MedicalIcons } from './MedicalIcons';
 const RiskGauge = ({ analysis }) => {
   // Calculate overall risk score based on analysis
   const calculateRiskScore = (analysisData) => {
-    if (!analysisData?.patient_summary?.risk_analysis) return { score: 0, level: 'Unknown', color: '#94a3b8' };
-    
-    const riskLevel = analysisData.patient_summary.risk_analysis.overall_risk;
-    
-    if (riskLevel?.includes('High') || riskLevel === 'High') {
-      return { score: 85, level: 'High Risk', color: '#ef4444', bgColor: '#fee2e2' };
-    } else if (riskLevel?.includes('Moderate') || riskLevel?.includes('Medium')) {
-      return { score: 60, level: 'Moderate Risk', color: '#f59e0b', bgColor: '#fef3c7' };
-    } else if (riskLevel?.includes('Low') || riskLevel === 'Low') {
-      return { score: 25, level: 'Low Risk', color: '#10b981', bgColor: '#d1fae5' };
-    } else {
-      return { score: 45, level: 'Assessment Needed', color: '#6b7280', bgColor: '#f3f4f6' };
+    // Handle LLM analysis structure
+    if (analysisData?.risk_assessment?.overall_risk) {
+      const riskLevel = analysisData.risk_assessment.overall_risk.toLowerCase();
+      
+      if (riskLevel.includes('high') || riskLevel.includes('critical')) {
+        return { score: 85, level: 'High Risk', color: '#ef4444', bgColor: '#fee2e2' };
+      } else if (riskLevel.includes('moderate') || riskLevel.includes('medium')) {
+        return { score: 60, level: 'Moderate Risk', color: '#f59e0b', bgColor: '#fef3c7' };
+      } else if (riskLevel.includes('low')) {
+        return { score: 25, level: 'Low Risk', color: '#10b981', bgColor: '#d1fae5' };
+      }
     }
+    
+    // Handle legacy analysis structure
+    if (analysisData?.patient_summary?.risk_analysis) {
+      const riskLevel = analysisData.patient_summary.risk_analysis.overall_risk;
+      
+      if (riskLevel?.includes('High') || riskLevel === 'High') {
+        return { score: 85, level: 'High Risk', color: '#ef4444', bgColor: '#fee2e2' };
+      } else if (riskLevel?.includes('Moderate') || riskLevel?.includes('Medium')) {
+        return { score: 60, level: 'Moderate Risk', color: '#f59e0b', bgColor: '#fef3c7' };
+      } else if (riskLevel?.includes('Low') || riskLevel === 'Low') {
+        return { score: 25, level: 'Low Risk', color: '#10b981', bgColor: '#d1fae5' };
+      }
+    }
+    
+    return { score: 45, level: 'Assessment Completed', color: '#6b7280', bgColor: '#f3f4f6' };
   };
 
   const riskData = calculateRiskScore(analysis);
@@ -27,7 +41,17 @@ const RiskGauge = ({ analysis }) => {
   const getRiskFactors = () => {
     const factors = [];
     
-    if (analysis?.patient_summary?.detected_conditions?.length > 0) {
+    // Handle LLM analysis structure
+    if (analysis?.findings && Array.isArray(analysis.findings) && analysis.findings.length > 0) {
+      factors.push({
+        name: 'Medical Findings',
+        count: analysis.findings.length,
+        icon: MedicalIcons.Stethoscope,
+        color: '#ef4444'
+      });
+    }
+    // Handle legacy analysis structure
+    else if (analysis?.patient_summary?.detected_conditions?.length > 0) {
       factors.push({
         name: 'Medical Conditions',
         count: analysis.patient_summary.detected_conditions.length,
@@ -36,6 +60,7 @@ const RiskGauge = ({ analysis }) => {
       });
     }
     
+    // Handle both LLM and legacy risk factors
     if (analysis?.risk_assessment?.risk_factors?.length > 0) {
       factors.push({
         name: 'Risk Factors',
@@ -45,7 +70,17 @@ const RiskGauge = ({ analysis }) => {
       });
     }
     
-    if (analysis?.patient_summary?.recommendations?.length > 0) {
+    // Handle LLM recommendations structure
+    if (analysis?.recommendations && Array.isArray(analysis.recommendations) && analysis.recommendations.length > 0) {
+      factors.push({
+        name: 'Recommendations',
+        count: analysis.recommendations.length,
+        icon: MedicalIcons.RecommendationIcon,
+        color: '#10b981'
+      });
+    }
+    // Handle legacy recommendations structure
+    else if (analysis?.patient_summary?.recommendations?.length > 0) {
       factors.push({
         name: 'Recommendations',
         count: analysis.patient_summary.recommendations.length,
