@@ -4,6 +4,13 @@
 
 A comprehensive medical document analysis system that leverages OpenAI GPT-4o-mini and advanced AI to transform medical reports into actionable insights. Features dynamic risk calculation, dark/light themes, and multi-format report downloads.
 
+## video Demo
+
+
+https://github.com/user-attachments/assets/47c268bb-f969-43c0-82ef-aaeefe59d7e7
+
+
+
 ## 🌟 Key Features
 
 ### 🎯 **Core Functionality**
