@@ -6,7 +6,7 @@ class MediSenseAPIService {
   constructor() {
     this.apiClient = axios.create({
       baseURL: API_BASE_URL,
-      timeout: 60000,
+      timeout: 120000, // Increased to 2 minutes for complex analysis
       headers: {
         'Content-Type': 'application/json',
       },

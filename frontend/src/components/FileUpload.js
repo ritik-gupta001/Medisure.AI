@@ -1,8 +1,11 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Upload, File, AlertCircle, Sparkles, Cpu, Zap } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
+import ThemeToggle from './ThemeToggle';
 
 const FileUpload = ({ onUpload, isLoading = false, apiHealth = null }) => {
+  const { currentColors } = useTheme();
   const [uploadError, setUploadError] = useState(null);
   const [analysisMode, setAnalysisMode] = useState('llm'); // 'llm' or 'legacy'
 

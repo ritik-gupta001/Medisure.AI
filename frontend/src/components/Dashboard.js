@@ -3,9 +3,13 @@ import { MedicalIcons, MedicalGradients } from './MedicalIcons';
 import VitalCharts from './VitalCharts';
 import RiskGauge from './RiskGauge';
 import AIChatInterface from './AIChatInterface';
+import ThemeToggle from './ThemeToggle';
+import DownloadReport from './DownloadReport';
+import { useTheme } from '../contexts/ThemeContext';
 import apiService from '../services/api';
 
 const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
+  const { currentColors } = useTheme();
   const [activeTab, setActiveTab] = useState('overview');
   const [uploadHistory, setUploadHistory] = useState([]);
   const [apiHealth, setApiHealth] = useState(null);
@@ -59,49 +63,53 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%)',
+      background: currentColors.gradient,
       display: 'flex'
     }}>
       {/* Left Sidebar */}
       <div style={{
         width: '320px',
-        background: 'rgba(255, 255, 255, 0.95)',
+        background: `rgba(${currentColors.surface.slice(1)}, 0.95)`,
         backdropFilter: 'blur(10px)',
-        borderRight: '1px solid rgba(255, 255, 255, 0.2)',
-        boxShadow: '4px 0 24px rgba(0, 0, 0, 0.1)',
+        borderRight: `1px solid ${currentColors.border}`,
+        boxShadow: `4px 0 24px ${currentColors.shadow}`,
         padding: '24px',
         overflowY: 'auto'
       }}>
-        {/* Logo */}
+        {/* Logo and Theme Toggle */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           marginBottom: '32px',
           paddingBottom: '24px',
-          borderBottom: '1px solid #e5e7eb'
+          borderBottom: `1px solid ${currentColors.border}`
         }}>
-          <MedicalIcons.Brain />
-          <div style={{marginLeft: '12px'}}>
-            <h2 style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937', margin: 0}}>
-              MediSure AI
-            </h2>
-            <p style={{fontSize: '0.8rem', color: '#6b7280', margin: 0}}>
-              Medical Analysis Dashboard
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <MedicalIcons.Brain />
+            <div style={{marginLeft: '12px'}}>
+              <h2 style={{fontSize: '1.5rem', fontWeight: 'bold', color: currentColors.text.primary, margin: 0}}>
+                MediSure AI
+              </h2>
+              <p style={{fontSize: '0.8rem', color: currentColors.text.secondary, margin: 0}}>
+                Medical Analysis Dashboard
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
 
         {/* Upload Section */}
         <div style={{marginBottom: '32px'}}>
-          <h3 style={{fontSize: '1.1rem', fontWeight: '600', color: '#374151', marginBottom: '16px'}}>
+          <h3 style={{fontSize: '1.1rem', fontWeight: '600', color: currentColors.text.primary, marginBottom: '16px'}}>
             Upload New Report
           </h3>
           <div style={{
-            border: '2px dashed #cbd5e1',
+            border: `2px dashed ${currentColors.border}`,
             borderRadius: '12px',
             padding: '20px',
             textAlign: 'center',
-            background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)'
+            background: currentColors.surface
           }}>
             <div style={{display: 'flex', justifyContent: 'center', marginBottom: '12px'}}>
               <MedicalIcons.DocumentIcon />
@@ -161,9 +169,31 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
           </div>
         </div>
 
+        {/* Download Report Section */}
+        {analysis && (
+          <div style={{marginBottom: '32px'}}>
+            <h3 style={{fontSize: '1.1rem', fontWeight: '600', color: currentColors.text.primary, marginBottom: '16px'}}>
+              Download Report
+            </h3>
+            <div style={{
+              padding: '16px',
+              background: currentColors.surface,
+              borderRadius: '12px',
+              border: `1px solid ${currentColors.border}`,
+              boxShadow: `0 2px 8px ${currentColors.shadow}`
+            }}>
+              <DownloadReport 
+                analysis={analysis} 
+                patientName="Patient Report" 
+                style={{ justifyContent: 'center' }}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Upload History */}
         <div style={{marginBottom: '24px'}}>
-          <h3 style={{fontSize: '1.1rem', fontWeight: '600', color: '#374151', marginBottom: '16px'}}>
+          <h3 style={{fontSize: '1.1rem', fontWeight: '600', color: currentColors.text.primary, marginBottom: '16px'}}>
             Recent Analyses
           </h3>
           <div style={{maxHeight: '400px', overflowY: 'auto'}}>
@@ -171,9 +201,9 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
               <div style={{
                 padding: '16px',
                 textAlign: 'center',
-                color: '#9ca3af',
+                color: currentColors.text.secondary,
                 fontSize: '0.9rem',
-                background: '#f9fafb',
+                background: currentColors.surface,
                 borderRadius: '8px'
               }}>
                 No analyses yet
@@ -269,15 +299,15 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
       <div style={{flex: 1, padding: '24px', overflowY: 'auto'}}>
         {loading && (
           <div style={{
-            background: 'rgba(255, 255, 255, 0.95)',
+            background: currentColors.surface,
             borderRadius: '16px',
             padding: '40px',
             textAlign: 'center',
-            boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+            boxShadow: `0 10px 15px -3px ${currentColors.shadow}`,
             backdropFilter: 'blur(10px)'
           }}>
             <MedicalIcons.LoadingIcon />
-            <p style={{marginTop: '16px', fontSize: '1.1rem', color: '#4b5563'}}>
+            <p style={{marginTop: '16px', fontSize: '1.1rem', color: currentColors.text.secondary}}>
               Analyzing your medical report with AI intelligence...
             </p>
           </div>

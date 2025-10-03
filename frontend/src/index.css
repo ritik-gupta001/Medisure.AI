@@ -2,6 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Variables for Theme */
+:root {
+  --primary-color: #3b82f6;
+  --secondary-color: #10b981;
+  --background-color: #ffffff;
+  --surface-color: #f8fafc;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode variables */
+html.dark {
+  --primary-color: #60a5fa;
+  --secondary-color: #34d399;
+  --background-color: #111827;
+  --surface-color: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --border-color: #4b5563;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Theme transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
 /* Custom styles for medical interface */
 .medical-card {
   @apply bg-white rounded-lg shadow-lg border border-medical-200 p-6;
@@ -140,4 +169,57 @@
 .medical-card:hover {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
+}
+
+/* Dark mode enhancements */
+html.dark .medical-card {
+  background-color: var(--surface-color);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html.dark .chat-message {
+  color: var(--text-primary);
+}
+
+html.dark .chat-bot {
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+}
+
+html.dark .loading-shimmer {
+  background: linear-gradient(to right, #1f2937 8%, #374151 18%, #1f2937 33%);
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Global dark mode body styling */
+html.dark body {
+  background-color: var(--background-color);
+  color: var(--text-primary);
+}
+
+/* Print styles */
+@media print {
+  html.dark,
+  html.dark body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  html.dark * {
+    background: white !important;
+    color: black !important;
+    border-color: #ccc !important;
+  }
 }
