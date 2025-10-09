@@ -15,7 +15,7 @@ https://github.com/user-attachments/assets/47c268bb-f969-43c0-82ef-aaeefe59d7e7
 
 ### 🎯 **Core Functionality**
 - **📄 PDF Analysis**: Upload medical reports for comprehensive AI analysis with OpenAI integration
-- **🧠 Dynamic Risk Assessment**: Real AI-calculated risk percentages (NO MORE 85% HALLUCINATION!)
+- **🧠 Dynamic Risk Assessment**: Real AI-calculated risk percentages
 - **📊 Interactive Visualizations**: Real-time charts, gauges, and medical insights
 - **🌙 Dark/Light Mode**: Complete theme system with user preference persistence
 - **📥 Download Reports**: Export analysis in PDF, TXT, and JSON formats
@@ -333,7 +333,7 @@ npm run test:e2e
 - [x] FastAPI backend with comprehensive endpoints
 
 ### ✅ **Phase 2: Core Features** (Completed)
-- [x] Dynamic AI risk calculation (fixed 85% hallucination issue)
+- [x] Dynamic AI risk calculation
 - [x] Interactive medical visualizations  
 - [x] Professional medical icons and interface
 - [x] Real-time analysis with proper error handling
@@ -357,7 +357,7 @@ npm run test:e2e
 - [ ] 📊 Advanced analytics dashboard
 
 ### 🚀 **Recent Achievements**
-- **Fixed Risk Hallucination**: Eliminated hardcoded 85% risk values with dynamic AI calculation
+- **Fixed Risk Hallucination**:Eliminated hardcoded 85% risk values with dynamic AI calculation
 - **Theme System**: Complete dark/light mode with user preference persistence  
 - **Download Functionality**: Professional report generation in multiple formats
 - **Performance Optimization**: Improved analysis speed and reliability
@@ -366,7 +366,7 @@ npm run test:e2e
 ## 🔧 Recent Improvements
 
 ### 🎯 **Major Bug Fixes**
-- **Fixed 85% Risk Hallucination**: The application was showing hardcoded 85% risk values regardless of actual content. Now features dynamic AI-calculated percentages that vary realistically (e.g., 68-78% for high risk, 10-15% for low risk)
+- **Fixed 85% Risk Hallucination**: The application was showing hardcoded 85% risk values regardless of actual content,hence it get fixed based on AI based analysis
 - **Enhanced OpenAI Integration**: Improved prompts to specifically request percentage calculations from GPT-4o-mini
 - **Performance Optimization**: Increased API timeouts and optimized analysis speed
 
