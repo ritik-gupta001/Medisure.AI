@@ -1,29 +1,60 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 import uvicorn
 from intelligent_analyzer import MedicalTextAnalyzer
+from llm_analyzer import analyze_medical_document_llm, chat_with_medical_ai, get_health_insights, check_ai_status
 import logging
 import PyPDF2
 import io
+import os
+from typing import Optional
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="MediSense AI", description="Intelligent Medical Report Analysis API")
+app = FastAPI(
+    title="MediSense AI", 
+    description="Advanced AI-Powered Medical Report Analysis API with LLM and RAG",
+    version="2.0.0"
+)
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=[
+        "http://localhost:3000", 
+        "http://127.0.0.1:3000",
+        "https://*.netlify.app",
+        "https://medisense-ai.netlify.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Initialize the analyzer
-analyzer = MedicalTextAnalyzer()
+# Initialize analyzers
+legacy_analyzer = MedicalTextAnalyzer()
+
+# Pydantic models for request/response
+class ChatRequest(BaseModel):
+    message: str
+    context: Optional[str] = None
+    conversation_id: Optional[str] = None
+
+class TextAnalysisRequest(BaseModel):
+    text: str
+    filename: Optional[str] = "text_input.txt"
+    use_llm: Optional[bool] = True
+
+class HealthInsightsRequest(BaseModel):
+    analysis_data: dict
 
 def extract_text_from_pdf(pdf_content):
     """Extract text content from PDF file"""
@@ -41,14 +72,34 @@ def extract_text_from_pdf(pdf_content):
 
 @app.get("/")
 async def root():
-    return {"message": "MediSense AI - Medical Report Analysis API", "status": "running"}
+    return {
+        "message": "MediSense AI - Advanced Medical Report Analysis API", 
+        "status": "running",
+        "version": "2.0.0",
+        "features": ["LLM Analysis", "RAG Support", "AI Chatbot", "Medical Knowledge Base"]
+    }
 
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "analyzer": "ready"}
+    return {
+        "status": "healthy", 
+        "analyzers": {
+            "legacy": "ready",
+            "llm": "ready" if os.getenv('OPENAI_API_KEY') or os.getenv('ANTHROPIC_API_KEY') else "needs_api_key"
+        },
+        "features": {
+            "rag": bool(os.getenv('ENABLE_RAG', 'true').lower() == 'true'),
+            "chatbot": bool(os.getenv('ENABLE_CHATBOT', 'true').lower() == 'true')
+        }
+    }
+
+@app.get("/ai-status")
+async def ai_status():
+    """Check AI configuration status"""
+    return check_ai_status()
 
 @app.post("/analyze")
-async def analyze_document(file: UploadFile = File(...)):
+async def analyze_document(file: UploadFile = File(...), use_llm: bool = True):
     try:
         # Validate file type
         if not file.filename.lower().endswith('.pdf'):
@@ -68,15 +119,21 @@ async def analyze_document(file: UploadFile = File(...)):
             logger.error(f"PDF extraction error: {str(e)}")
             raise HTTPException(status_code=400, detail=f"Failed to extract text from PDF: {str(e)}")
         
-        # Analyze using your intelligent analyzer
-        analysis_result = analyzer.analyze_medical_document(text_content, file.filename)
+        # Choose analysis method
+        if use_llm and (os.getenv('OPENAI_API_KEY') or os.getenv('ANTHROPIC_API_KEY')):
+            logger.info("Using LLM-powered analysis")
+            analysis_result = analyze_medical_document_llm(text_content)
+        else:
+            logger.info("Using legacy rule-based analysis")
+            analysis_result = legacy_analyzer.analyze_medical_document(text_content, file.filename)
         
         logger.info("Analysis completed successfully")
         
         return JSONResponse(content={
             "success": True,
             "filename": file.filename,
-            "analysis": analysis_result
+            "analysis": analysis_result,
+            "analysis_type": "LLM-powered" if use_llm else "Rule-based"
         })
         
     except HTTPException:
@@ -86,30 +143,86 @@ async def analyze_document(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
 
 @app.post("/analyze-text")
-async def analyze_text(request: dict):
+async def analyze_text(request: TextAnalysisRequest):
     try:
-        text_content = request.get("text", "")
-        filename = request.get("filename", "text_input.txt")
+        text_content = request.text
+        filename = request.filename
+        use_llm = request.use_llm
         
         if not text_content.strip():
             raise HTTPException(status_code=400, detail="Text content is required")
         
         logger.info("Analyzing text input")
         
-        # Analyze using your intelligent analyzer
-        analysis_result = analyzer.analyze_medical_document(text_content, filename)
+        # Choose analysis method
+        if use_llm and (os.getenv('OPENAI_API_KEY') or os.getenv('ANTHROPIC_API_KEY')):
+            logger.info("Using LLM-powered text analysis")
+            analysis_result = analyze_medical_document_llm(text_content)
+        else:
+            logger.info("Using legacy rule-based text analysis")
+            analysis_result = legacy_analyzer.analyze_medical_document(text_content, filename)
         
         logger.info("Text analysis completed successfully")
         
         return JSONResponse(content={
             "success": True,
             "filename": filename,
-            "analysis": analysis_result
+            "analysis": analysis_result,
+            "analysis_type": "LLM-powered" if use_llm else "Rule-based"
         })
         
     except Exception as e:
         logger.error(f"Error analyzing text: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Text analysis failed: {str(e)}")
+
+@app.post("/chat")
+async def chat_with_ai(request: ChatRequest):
+    """AI Chatbot endpoint for medical questions and conversations"""
+    try:
+        if not os.getenv('OPENAI_API_KEY') and not os.getenv('ANTHROPIC_API_KEY'):
+            raise HTTPException(
+                status_code=503, 
+                detail="AI Chat service unavailable. Please configure API keys."
+            )
+        
+        logger.info(f"Processing chat message: {request.message[:50]}...")
+        
+        chat_response = chat_with_medical_ai(request.message, request.context)
+        
+        return JSONResponse(content={
+            "success": True,
+            "response": chat_response["response"],
+            "sources": chat_response.get("sources", []),
+            "conversation_id": chat_response.get("conversation_id"),
+            "timestamp": chat_response.get("timestamp")
+        })
+        
+    except Exception as e:
+        logger.error(f"Error in chat: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Chat failed: {str(e)}")
+
+@app.post("/health-insights")
+async def generate_health_insights(request: HealthInsightsRequest):
+    """Generate additional health insights based on analysis data"""
+    try:
+        if not os.getenv('OPENAI_API_KEY') and not os.getenv('ANTHROPIC_API_KEY'):
+            raise HTTPException(
+                status_code=503, 
+                detail="Health insights service unavailable. Please configure API keys."
+            )
+        
+        logger.info("Generating health insights")
+        
+        insights = get_health_insights(request.analysis_data)
+        
+        return JSONResponse(content={
+            "success": True,
+            "insights": insights
+        })
+        
+    except Exception as e:
+        logger.error(f"Error generating insights: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Insights generation failed: {str(e)}")
 
 @app.get("/demo")
 async def get_demo_analysis():
@@ -162,7 +275,11 @@ async def get_demo_analysis():
         
         logger.info("Running demo analysis")
         
-        analysis_result = analyzer.analyze_medical_document(demo_text, "demo_medical_report.pdf")
+        # Use LLM analysis if available, otherwise fall back to legacy
+        if os.getenv('OPENAI_API_KEY') or os.getenv('ANTHROPIC_API_KEY'):
+            analysis_result = analyze_medical_document_llm(demo_text)
+        else:
+            analysis_result = legacy_analyzer.analyze_medical_document(demo_text, "demo_medical_report.pdf")
         
         return JSONResponse(content={
             "success": True,
