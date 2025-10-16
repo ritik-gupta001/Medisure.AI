@@ -1,9 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, File, AlertCircle } from 'lucide-react';
+import { Upload, File, AlertCircle, Sparkles, Cpu, Zap } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
+import ThemeToggle from './ThemeToggle';
 
-const FileUpload = ({ onUpload, isLoading = false }) => {
+const FileUpload = ({ onUpload, isLoading = false, apiHealth = null }) => {
+  const { currentColors } = useTheme();
   const [uploadError, setUploadError] = useState(null);
+  const [analysisMode, setAnalysisMode] = useState('llm'); // 'llm' or 'legacy'
 
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     setUploadError(null);
@@ -17,9 +21,9 @@ const FileUpload = ({ onUpload, isLoading = false }) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
       console.log('📁 File selected:', file.name, 'Size:', (file.size / 1024 / 1024).toFixed(2), 'MB');
-      onUpload(file);
+      onUpload(file, analysisMode === 'llm');
     }
-  }, [onUpload]);
+  }, [onUpload, analysisMode]);
 
   const {
     getRootProps,
@@ -41,7 +45,84 @@ const FileUpload = ({ onUpload, isLoading = false }) => {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-4">
+      {/* Analysis Mode Selection */}
+      <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-3">Analysis Method</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          
+          {/* LLM Analysis Option */}
+          <div 
+            className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${
+              analysisMode === 'llm' 
+                ? 'border-blue-500 bg-blue-50' 
+                : 'border-gray-200 hover:border-blue-300'
+            }`}
+            onClick={() => setAnalysisMode('llm')}
+          >
+            <div className="flex items-center space-x-3">
+              <div className={`p-2 rounded-full ${
+                analysisMode === 'llm' ? 'bg-blue-500' : 'bg-gray-400'
+              }`}>
+                <Sparkles className="h-5 w-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-medium text-gray-900">AI-Powered Analysis</h4>
+                <p className="text-sm text-gray-600">
+                  Advanced LLM with medical knowledge base
+                </p>
+                {apiHealth?.analyzers?.llm === 'needs_api_key' && (
+                  <p className="text-xs text-amber-600 mt-1">
+                    ⚠️ Requires API key configuration
+                  </p>
+                )}
+              </div>
+              <input
+                type="radio"
+                checked={analysisMode === 'llm'}
+                onChange={() => setAnalysisMode('llm')}
+                className="text-blue-500"
+                disabled={apiHealth?.analyzers?.llm === 'needs_api_key'}
+              />
+            </div>
+          </div>
+
+          {/* Legacy Analysis Option */}
+          <div 
+            className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${
+              analysisMode === 'legacy' 
+                ? 'border-green-500 bg-green-50' 
+                : 'border-gray-200 hover:border-green-300'
+            }`}
+            onClick={() => setAnalysisMode('legacy')}
+          >
+            <div className="flex items-center space-x-3">
+              <div className={`p-2 rounded-full ${
+                analysisMode === 'legacy' ? 'bg-green-500' : 'bg-gray-400'
+              }`}>
+                <Cpu className="h-5 w-5 text-white" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-medium text-gray-900">Rule-Based Analysis</h4>
+                <p className="text-sm text-gray-600">
+                  Traditional pattern matching approach
+                </p>
+                <p className="text-xs text-green-600 mt-1">
+                  ✓ Always available
+                </p>
+              </div>
+              <input
+                type="radio"
+                checked={analysisMode === 'legacy'}
+                onChange={() => setAnalysisMode('legacy')}
+                className="text-green-500"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Upload Zone */}
       <div
         {...getRootProps()}
         className={`
