@@ -442,6 +442,64 @@ Please provide specific insights in JSON format:
             "confidence": 30
         }
 
+    def _create_fallback_report(self, analysis_data: Dict[str, Any], patient_info: Dict[str, str] = None) -> Dict[str, Any]:
+        """Create fallback medical report when AI is unavailable"""
+        return {
+            "medical_report": {
+                "subjective": "Patient presents for medical document review and analysis.",
+                "objective": {
+                    "vital_signs": "Documented in provided medical records",
+                    "laboratory_findings": "See detailed findings in analysis data",
+                    "clinical_observations": "Based on submitted medical documentation"
+                },
+                "assessment": {
+                    "primary_diagnosis": "Comprehensive medical analysis completed",
+                    "differential_diagnosis": ["Further clinical correlation recommended"],
+                    "risk_stratification": analysis_data.get('risk_assessment', {}).get('overall_risk', 'To be determined'),
+                    "prognostic_indicators": "Dependent on clinical context and provider assessment"
+                },
+                "plan": {
+                    "immediate_interventions": ["Review results with healthcare provider"],
+                    "pharmacological": ["As directed by healthcare provider"],
+                    "non_pharmacological": ["Maintain healthy lifestyle practices"],
+                    "monitoring": ["Regular follow-up as recommended by provider"],
+                    "referrals": ["Specialist consultation if indicated"],
+                    "patient_education": ["Discuss results with medical team"]
+                }
+            },
+            "patient_explanation": {
+                "overview": "Your medical documents have been analyzed using advanced AI technology. The analysis provides insights into your health status based on the available information. It's important to remember that this AI analysis is designed to support, not replace, professional medical judgment.",
+                "what_this_means": "The results show various health indicators that have been evaluated against standard medical ranges. Your healthcare provider can help interpret these findings in the context of your complete medical history and current health status.",
+                "action_steps": "Schedule an appointment with your healthcare provider to discuss these results in detail. Bring any questions you have about specific findings or recommendations.",
+                "when_to_worry": "Seek immediate medical attention if you experience: severe chest pain, difficulty breathing, sudden weakness or numbness, severe headache, or any symptoms that concern you.",
+                "positive_aspects": "Your proactive approach to understanding your health through medical analysis is commendable and supports better health outcomes."
+            },
+            "visual_coding": {
+                "severity_colors": {
+                    "critical": "#DC2626",
+                    "high": "#EF4444",
+                    "moderate": "#F59E0B",
+                    "mild": "#FCD34D",
+                    "normal": "#10B981",
+                    "optimal": "#059669"
+                },
+                "icon_recommendations": {
+                    "cardiovascular": "Heart",
+                    "metabolic": "Activity",
+                    "respiratory": "Wind",
+                    "neurological": "Brain",
+                    "urgent": "AlertTriangle",
+                    "success": "CheckCircle",
+                    "warning": "AlertCircle",
+                    "info": "Info"
+                }
+            },
+            "timestamp": datetime.now().isoformat(),
+            "report_id": f"MR-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+            "ai_generated": False,
+            "note": "Configure OPENAI_API_KEY for AI-enhanced medical reporting"
+        }
+
     def _create_fallback_insights(self) -> Dict[str, Any]:
         """Create fallback health insights"""
         return {
@@ -473,6 +531,10 @@ def get_health_insights(analysis_data: Dict[str, Any]) -> Dict[str, Any]:
     return intelligent_analyzer.get_health_insights(analysis_data)
 
 # Health check function
+def generate_medical_report(analysis_data: Dict[str, Any], patient_info: Dict[str, str] = None) -> Dict[str, Any]:
+    """Generate comprehensive medical report with SOAP format"""
+    return intelligent_analyzer.generate_medical_report(analysis_data, patient_info)
+
 def check_ai_status() -> Dict[str, Any]:
     """Check if AI features are properly configured"""
     return {
@@ -482,6 +544,7 @@ def check_ai_status() -> Dict[str, Any]:
         "features": {
             "document_analysis": intelligent_analyzer.api_key_configured,
             "ai_chat": intelligent_analyzer.api_key_configured,
-            "health_insights": intelligent_analyzer.api_key_configured
+            "health_insights": intelligent_analyzer.api_key_configured,
+            "medical_reports": intelligent_analyzer.api_key_configured
         }
     }

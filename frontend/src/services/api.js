@@ -1,21 +1,18 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 
-  (process.env.NODE_ENV === 'production' 
-    ? 'https://medisense-ai-backend.onrender.com' 
-    : 'http://localhost:8000');
-
-console.log('🔗 API Base URL:', API_BASE_URL, '| Environment:', process.env.NODE_ENV);
+const API_BASE_URL = 'http://localhost:8000';
 
 class MediSenseAPIService {
   constructor() {
     this.apiClient = axios.create({
       baseURL: API_BASE_URL,
-      timeout: 120000, // Increased to 2 minutes for complex analysis
+      timeout: 30000,
       headers: {
         'Content-Type': 'application/json',
       },
     });
+    
+    console.log('✅ API configured for:', API_BASE_URL);
   }
 
   async analyzeDocument(file, useLLM = true) {
@@ -107,6 +104,22 @@ class MediSenseAPIService {
       };
     } catch (error) {
       throw new Error(error.response?.data?.detail || error.message || 'Health insights request failed');
+    }
+  }
+
+  async generateMedicalReport(analysisData, patientInfo = null) {
+    try {
+      const response = await this.apiClient.post('/generate-report', {
+        analysis_data: analysisData,
+        patient_info: patientInfo
+      });
+
+      return {
+        success: true,
+        report: response.data.report
+      };
+    } catch (error) {
+      throw new Error(error.response?.data?.detail || error.message || 'Medical report generation failed');
     }
   }
 }

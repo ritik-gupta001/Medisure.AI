@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import uvicorn
 from intelligent_analyzer import MedicalTextAnalyzer
-from llm_analyzer import analyze_medical_document_llm, chat_with_medical_ai, get_health_insights, check_ai_status
+from llm_analyzer import analyze_medical_document_llm, chat_with_medical_ai, get_health_insights, check_ai_status, generate_medical_report
 import logging
 import PyPDF2
 import io
@@ -58,6 +58,10 @@ class TextAnalysisRequest(BaseModel):
 
 class HealthInsightsRequest(BaseModel):
     analysis_data: dict
+
+class MedicalReportRequest(BaseModel):
+    analysis_data: dict
+    patient_info: Optional[dict] = None
 
 def extract_text_from_pdf(pdf_content):
     """Extract text content from PDF file"""
@@ -226,6 +230,29 @@ async def generate_health_insights(request: HealthInsightsRequest):
     except Exception as e:
         logger.error(f"Error generating insights: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Insights generation failed: {str(e)}")
+
+@app.post("/generate-report")
+async def create_medical_report(request: MedicalReportRequest):
+    """Generate comprehensive medical report in SOAP format with patient explanations"""
+    try:
+        if not os.getenv('OPENAI_API_KEY') and not os.getenv('ANTHROPIC_API_KEY'):
+            raise HTTPException(
+                status_code=503, 
+                detail="Medical report generation unavailable. Please configure API keys."
+            )
+        
+        logger.info("Generating professional medical report")
+        
+        report = generate_medical_report(request.analysis_data, request.patient_info)
+        
+        return JSONResponse(content={
+            "success": True,
+            "report": report
+        })
+        
+    except Exception as e:
+        logger.error(f"Error generating medical report: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Medical report generation failed: {str(e)}")
 
 @app.get("/demo")
 async def get_demo_analysis():

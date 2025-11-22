@@ -5,6 +5,7 @@ import RiskGauge from './RiskGauge';
 import AIChatInterface from './AIChatInterface';
 import ThemeToggle from './ThemeToggle';
 import DownloadReport from './DownloadReport';
+import MedicalReportPDF from './MedicalReportPDF';
 import { useTheme } from '../contexts/ThemeContext';
 import apiService from '../services/api';
 
@@ -195,6 +196,25 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
                 analysis={analysis} 
                 patientName="Patient Report" 
                 style={{ justifyContent: 'center' }}
+              />
+            </div>
+
+            {/* Professional Medical Report */}
+            <div style={{
+              padding: '20px',
+              background: currentColors.surface,
+              borderRadius: '12px',
+              border: `1px solid ${currentColors.border}`,
+              boxShadow: `0 2px 8px ${currentColors.shadow}`,
+              marginTop: '20px'
+            }}>
+              <MedicalReportPDF
+                analysis={analysis}
+                patientInfo={{
+                  name: analysis?.patient_summary?.demographics?.patient_id || 'Patient',
+                  age: analysis?.patient_summary?.demographics?.age || 'N/A',
+                  sex: analysis?.patient_summary?.demographics?.sex || 'N/A'
+                }}
               />
             </div>
           </div>

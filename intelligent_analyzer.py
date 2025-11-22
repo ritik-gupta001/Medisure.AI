@@ -477,12 +477,6 @@ class MedicalTextAnalyzer:
         
         final_percentage = min(final_percentage, 95)  # Cap at 95% max
         
-        # Add some randomization to ensure different results for similar inputs
-        # This helps address the "hallucination" issue by providing more realistic variance
-        import random
-        variance = random.randint(-3, 3)  # ±3% variance
-        final_percentage = max(5, min(95, final_percentage + variance))
-        
         return final_percentage
 
     def _generate_recommendations(self, lab_values: Dict, findings: List, risk_assessment: Dict) -> List[str]:
@@ -844,11 +838,6 @@ class MedicalTextAnalyzer:
             final_percentage = max(10, risk_score * 5)
         
         final_percentage = min(final_percentage, 90)  # Cap at 90%
-        
-        # Add variance to prevent always showing same values
-        import random
-        variance = random.randint(-4, 6)  # ±4-6% variance
-        final_percentage = max(8, min(92, final_percentage + variance))
         
         return final_percentage
     

@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Calendar, Activity, TrendingUp, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { User, Calendar, Activity, TrendingUp, AlertTriangle, CheckCircle, Clock, Heart, Brain, Wind, Droplet, Zap, Shield } from 'lucide-react';
 
 const PatientSummary = ({ summary, isLoading = false }) => {
   if (isLoading) {
@@ -10,22 +10,68 @@ const PatientSummary = ({ summary, isLoading = false }) => {
     return null;
   }
 
-  const getRiskColor = (significance) => {
-    switch (significance?.toLowerCase()) {
-      case 'high': return 'text-red-600 bg-red-50';
-      case 'moderate': return 'text-yellow-600 bg-yellow-50';
-      case 'low': return 'text-green-600 bg-green-50';
-      default: return 'text-gray-600 bg-gray-50';
-    }
+  const getSeverityColor = (significance) => {
+    const severityMap = {
+      'critical': { bg: 'bg-red-50', text: 'text-red-700', border: 'border-red-200', icon: 'text-red-600' },
+      'high': { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200', icon: 'text-orange-600' },
+      'moderate': { bg: 'bg-yellow-50', text: 'text-yellow-700', border: 'border-yellow-200', icon: 'text-yellow-600' },
+      'mild': { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200', icon: 'text-blue-600' },
+      'low': { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200', icon: 'text-green-600' },
+      'normal': { bg: 'bg-teal-50', text: 'text-teal-700', border: 'border-teal-200', icon: 'text-teal-600' },
+      'optimal': { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-200', icon: 'text-emerald-600' }
+    };
+    return severityMap[significance?.toLowerCase()] || severityMap['normal'];
   };
 
   const getRiskIcon = (significance) => {
     switch (significance?.toLowerCase()) {
-      case 'high': return <AlertTriangle className="h-4 w-4" />;
-      case 'moderate': return <Clock className="h-4 w-4" />;
-      case 'low': return <CheckCircle className="h-4 w-4" />;
-      default: return <Activity className="h-4 w-4" />;
+      case 'critical': return <AlertTriangle className="h-5 w-5" />;
+      case 'high': return <AlertTriangle className="h-5 w-5" />;
+      case 'moderate': return <Clock className="h-5 w-5" />;
+      case 'mild': return <Activity className="h-5 w-5" />;
+      case 'low': return <CheckCircle className="h-5 w-5" />;
+      case 'normal': return <CheckCircle className="h-5 w-5" />;
+      case 'optimal': return <Shield className="h-5 w-5" />;
+      default: return <Activity className="h-5 w-5" />;
     }
+  };
+
+  const getCategoryIcon = (finding) => {
+    const findingLower = finding?.toLowerCase() || '';
+    
+    // Cardiovascular
+    if (findingLower.includes('heart') || findingLower.includes('blood pressure') || 
+        findingLower.includes('bp') || findingLower.includes('pulse') || 
+        findingLower.includes('cholesterol') || findingLower.includes('cardiac')) {
+      return <Heart className="h-5 w-5 text-red-500" />;
+    }
+    
+    // Neurological
+    if (findingLower.includes('brain') || findingLower.includes('neuro') || 
+        findingLower.includes('cognitive') || findingLower.includes('mental')) {
+      return <Brain className="h-5 w-5 text-purple-500" />;
+    }
+    
+    // Respiratory
+    if (findingLower.includes('lung') || findingLower.includes('respiratory') || 
+        findingLower.includes('breathing') || findingLower.includes('oxygen')) {
+      return <Wind className="h-5 w-5 text-blue-500" />;
+    }
+    
+    // Blood/Metabolic
+    if (findingLower.includes('glucose') || findingLower.includes('diabetes') || 
+        findingLower.includes('hemoglobin') || findingLower.includes('blood')) {
+      return <Droplet className="h-5 w-5 text-red-400" />;
+    }
+    
+    // Energy/Activity
+    if (findingLower.includes('energy') || findingLower.includes('metabol') || 
+        findingLower.includes('thyroid')) {
+      return <Zap className="h-5 w-5 text-yellow-500" />;
+    }
+    
+    // Default
+    return <Activity className="h-5 w-5 text-teal-500" />;
   };
 
   return (
@@ -68,26 +114,36 @@ const PatientSummary = ({ summary, isLoading = false }) => {
           Key Test Results
         </h3>
         <div className="space-y-3">
-          {summary.clinical_findings.map((finding, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <div className="flex items-center">
-                <div className={`p-2 rounded-full mr-3 ${getRiskColor(finding.significance)}`}>
-                  {getRiskIcon(finding.significance)}
+          {summary.clinical_findings.map((finding, index) => {
+            const colors = getSeverityColor(finding.significance);
+            return (
+              <div key={index} className={`flex items-start justify-between p-4 rounded-lg border-2 ${colors.border} ${colors.bg} transition-all hover:shadow-md`}>
+                <div className="flex items-start flex-1">
+                  <div className={`p-2 rounded-full mr-3 ${colors.icon} bg-white`}>
+                    {getCategoryIcon(finding.finding)}
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center mb-1">
+                      <p className="font-semibold text-gray-900 mr-2">{finding.finding}</p>
+                      <span className={`px-2 py-1 text-xs font-bold rounded-full ${colors.text} ${colors.bg} border ${colors.border}`}>
+                        {finding.significance?.toUpperCase()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-1">Normal range: {finding.normal_range}</p>
+                    <p className="text-xs text-gray-500 italic">Clinical significance: {finding.significance}</p>
+                  </div>
                 </div>
-                <div>
-                  <p className="font-medium text-gray-900">{finding.finding}</p>
-                  <p className="text-sm text-gray-600">Normal range: {finding.normal_range}</p>
+                <div className="text-right ml-4">
+                  <div className="flex items-center justify-end mb-1">
+                    <div className={`${colors.icon} mr-2`}>
+                      {getRiskIcon(finding.significance)}
+                    </div>
+                    <p className="text-xl font-bold text-gray-900">{finding.value}</p>
+                  </div>
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-lg font-bold text-gray-900">{finding.value}</p>
-                <span className={`risk-indicator ${finding.significance === 'High' ? 'risk-high' : 
-                  finding.significance === 'Moderate' ? 'risk-moderate' : 'risk-low'}`}>
-                  {finding.significance}
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
