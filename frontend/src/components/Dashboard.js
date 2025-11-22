@@ -19,11 +19,7 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
   React.useEffect(() => {
     const checkServices = async () => {
       try {
-        const [health, aiStatusData] = await Promise.all([
-          apiService.checkHealth(),
-          apiService.checkAIStatus()
-        ]);
-        setApiHealth(health);
+        const aiStatusData = await apiService.checkAIStatus();
         setAiStatus(aiStatusData);
       } catch (error) {
         console.error('Failed to check API services:', error);
