@@ -19,7 +19,6 @@ services:
   - type: web
     name: medisense-ai-frontend
     env: static
-    region: oregon
     plan: free
     branch: main
     buildCommand: cd frontend && npm install && npm run build
@@ -30,7 +29,4 @@ services:
           type: web
           name: medisense-ai-backend
           envVarKey: RENDER_EXTERNAL_URL
-    routes:
-      - type: rewrite
-        source: /api/*
-        destination: https://medisense-ai-backend.onrender.com/*
+
