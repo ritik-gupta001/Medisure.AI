@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+// Use Vercel API endpoint in production, localhost in development
+const API_BASE_URL = process.env.REACT_APP_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? '/api' 
+    : 'http://localhost:8000');
 
 class MediSenseAPIService {
   constructor() {
