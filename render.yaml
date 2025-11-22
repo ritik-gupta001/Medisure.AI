@@ -2,13 +2,11 @@ services:
   # Backend API Service
   - type: web
     name: medisense-ai-backend
-    runtime: python
+    env: python
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
       - key: OPENAI_API_KEY
         sync: false
       - key: CHROMA_PERSIST_DIRECTORY
@@ -16,4 +14,3 @@ services:
       - key: FAISS_INDEX_PATH
         value: ./faiss_index
     healthCheckPath: /health
-    autoDeploy: true
