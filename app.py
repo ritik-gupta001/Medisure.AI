@@ -34,7 +34,8 @@ app.add_middleware(
         "https://*.netlify.app",
         "https://medisense-ai.netlify.app",
         "https://*.onrender.com",
-        "https://medisense-ai-frontend.onrender.com"
+        "https://medisense-ai-frontend.onrender.com",
+        "https://medisurre-ai.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
