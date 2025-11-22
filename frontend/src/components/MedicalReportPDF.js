@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Download, CheckCircle, AlertTriangle, Info, Heart, Activity, Wind, Brain } from 'lucide-react';
+import { FileText, Download, CheckCircle, Info } from 'lucide-react';
 import api from '../services/api';
 
 const MedicalReportPDF = ({ analysis, patientInfo = {}, style = {} }) => {
