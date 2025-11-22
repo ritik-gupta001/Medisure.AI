@@ -1,7 +1,7 @@
 {
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
-  "installCommand": "pip install -r requirements.txt",
+  "installCommand": "pip install -r requirements-vercel.txt",
   "rewrites": [
     {
       "source": "/api/:path*",
