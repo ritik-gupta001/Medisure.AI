@@ -4,28 +4,35 @@
 
 A comprehensive medical document analysis system that leverages OpenAI GPT-4o-mini and advanced AI to transform medical reports into actionable insights. Features dynamic risk calculation, hospital-grade animations, and a beautiful teal-themed interface.
 
+![MediSense AI](https://img.shields.io/badge/React-18.2.0-blue?logo=react)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-green?logo=fastapi)
+![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-purple?logo=openai)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
 ## 🌟 Key Features
 
 ### 🎯 **Core Functionality**
-- **📄 PDF Analysis**: Upload medical reports for comprehensive AI analysis with OpenAI integration
-- **🧠 Dynamic Risk Assessment**: Real AI-calculated risk percentages
-- **📊 Interactive Visualizations**: Real-time charts, gauges, and medical insights
+- **📄 PDF Analysis**: Upload medical reports for comprehensive AI analysis with OpenAI GPT-4o-mini integration
+- **🧠 Dynamic Risk Assessment**: Real AI-calculated risk percentages based on medical content
+- **📊 Interactive Visualizations**: Real-time charts, gauges, and medical insights with Plotly & Recharts
 - **🌙 Dark/Light Mode**: Complete theme system with user preference persistence
 - **📥 Download Reports**: Export analysis in PDF, TXT, and JSON formats
-- **💬 AI Medical Chat**: Interactive medical assistant for health questions
-- **⚡ Optimized Performance**: Fast analysis with intelligent timeout handling
+- **💬 AI Medical Chat**: Interactive medical assistant powered by OpenAI for health questions
+- **⚡ Optimized Performance**: Fast analysis with intelligent timeout handling and error recovery
 
 ### 🎨 **Professional Interface**
-- **🏥 Hospital Logo**: Professional medical cross logo with animations
-- **🖥️ Modern Teal UI**: Beautiful medical-grade interface with teal color scheme
-- **📱 Responsive Design**: Works seamlessly on all devices
-- **✨ Hospital-Level Animations**: Smooth pulse, float, and heartbeat effects
-- **🎯 Intuitive Navigation**: User-friendly upload and analysis workflow
+- **🏥 Hospital Logo**: Professional medical cross logo with heartbeat animations
+- **🖥️ Modern Teal UI**: Beautiful medical-grade interface with custom teal color scheme (#14b8a6)
+- **📱 Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
+- **✨ Hospital-Level Animations**: Smooth pulse, float, heartbeat, and medical scan effects
+- **🎯 Intuitive Navigation**: User-friendly drag-and-drop upload and analysis workflow
 
 ### 🤖 **AI Intelligence**
-- **OpenAI GPT-4o-mini**: Latest AI model for medical analysis
-- **Dynamic Risk Calculation**: Real percentage calculation based on content analysis
-- **Intelligent Fallbacks**: Robust error handling with backup analysis systems
+- **OpenAI GPT-4o-mini**: Latest AI model optimized for medical document analysis
+- **LangChain Integration**: Advanced LLM orchestration for complex medical reasoning
+- **Dynamic Risk Calculation**: Real-time percentage calculation based on content analysis
+- **Vector Storage**: ChromaDB & FAISS for intelligent medical knowledge retrieval
+- **Intelligent Fallbacks**: Robust error handling with backup rule-based analysis systems
 - **Medical Knowledge Base**: Comprehensive medical guidelines and reference data
 
 ---
@@ -82,17 +89,21 @@ OPENAI_API_KEY=your-openai-api-key-here
 
 ### 5️⃣ Run the Application
 
-**Option A: Run Both Servers (Recommended)**
+**Option A: Simple Start (Recommended)**
 
 Open **two separate terminals**:
 
 **Terminal 1 - Backend:**
-```bash
-# Activate virtual environment first
+```powershell
+# Windows PowerShell
 .\venv\Scripts\Activate.ps1
+python app.py
+```
 
-# Run backend
-python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
+```bash
+# macOS/Linux
+source venv/bin/activate
+python app.py
 ```
 
 **Terminal 2 - Frontend:**
@@ -101,10 +112,15 @@ cd frontend
 npm start
 ```
 
-**Option B: Manual Python Start**
+**Option B: Production Mode**
 ```bash
-# Activate venv, then:
-python app.py
+# Backend with uvicorn
+.\venv\Scripts\Activate.ps1
+python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
+
+# Frontend production build
+cd frontend
+npm run build
 ```
 
 ### 6️⃣ Access the Application
@@ -172,7 +188,12 @@ MediSense AI/
 
 ### Backend Development
 ```bash
+# Activate virtual environment
+.\venv\Scripts\Activate.ps1
+
 # Run with auto-reload
+python app.py
+# or
 uvicorn app:app --reload --port 8000
 ```
 
@@ -190,76 +211,32 @@ npm run build  # Creates optimized production build
 
 ---
 
-## 🎨 Features Showcase
+## 🎨 Design Features
 
 ### Hospital-Grade Animations
-- ✨ Floating elements
-- 💓 Heartbeat pulse effects
-- 🔄 Smooth transitions
-- 📊 Animated data visualization
+- ✨ **Floating Elements**: Smooth vertical floating motion
+- 💓 **Heartbeat Pulse**: Medical-grade heartbeat effects on logo
+- 🔄 **Smooth Transitions**: Seamless theme switching and page transitions
+- 📊 **Animated Visualizations**: Real-time data updates with smooth animations
+- 🏥 **Medical Scan Effect**: Hospital equipment-inspired scan animations
+- ✨ **Shimmer Effects**: Professional loading and highlight effects
 
 ### Teal Color Theme
-- Modern medical teal palette
-- Consistent branding
-- Professional appearance
-- Dark/Light mode support
+- **Primary Teal**: `#14b8a6` - Modern medical aesthetic
+- **Dark Teal**: `#0d9488` - Professional accents
+- **Full Spectrum**: 50-900 shade range for versatile UI
+- **Dark/Light Mode**: Automatic theme persistence with smooth transitions
+- **Accessible**: WCAG compliant color contrast ratios
+
+### Component Features
+- 🏥 **Hospital Logo**: Animated medical cross with heartbeat indicator
+- 📤 **Drag & Drop Upload**: Intuitive file upload with visual feedback
+- 📊 **Risk Gauge**: Real-time risk assessment with color-coded indicators
+- 📈 **Vital Charts**: Interactive medical data visualization
+- 💬 **AI Chat**: Conversational medical assistant interface
+- 📥 **Multi-format Export**: PDF, TXT, and JSON report downloads
 
 ---
-
-## Prerequisites
-
-- **Python 3.8+**
-- **Node.js 14+**
-- **npm or yarn**
-
-### Installation
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/ritik-gupta001/Medisure.AI
-cd medisense-ai
-```
-
-2. **Backend Setup**
-```bash
-# Create virtual environment
-python -m venv venv
-
-# Activate virtual environment
-# Windows:
-.\venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-# Install Python dependencies
-pip install -r requirements.txt
-```
-
-3. **Frontend Setup**
-```bash
-cd frontend
-npm install
-```
-
-### Running the Application
-
-1. **Start the Backend** (Terminal 1)
-```bash
-# From root directory
-python app.py
-```
-
-2. **Start the Frontend** (Terminal 2)
-```bash
-# From frontend directory
-cd frontend
-npm start
-```
-
-3. **Access the Application**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Documentation: http://localhost:8000/docs
 
 ## 📁 Project Structure
 
@@ -533,7 +510,9 @@ npm run test:e2e
 - See realistic risk percentages based on actual content
 - Risk values now vary appropriately instead of showing constant 85%
 
-##  Contributing
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -541,42 +520,55 @@ npm run test:e2e
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-##  License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📝 License
 
-##  Disclaimer
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-**Important Medical Disclaimer**: MediSense AI is designed as an assistive tool for healthcare professionals and is not a substitute for professional medical advice, diagnosis, or treatment. Always consult with qualified healthcare providers for medical decisions. The AI analysis should be used in conjunction with, not as a replacement for, professional medical judgment.
+---
 
-##  Support
+## 📧 Support & Contact
 
-- ** Email**: rg409239@gmail.com
-- ** Issues**: [GitHub Issues](https://github.com/ritik-gupta001/medisense-ai/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/ritik-gupta001/medisense-ai/discussions)
+- **Email**: rg409239@gmail.com
+- **GitHub**: [@ritik-gupta001](https://github.com/ritik-gupta001)
+- **Issues**: [GitHub Issues](https://github.com/ritik-gupta001/Medisure.AI/issues)
 
-## Acknowledgments
+---
 
-- **Healthcare Professionals**: For domain expertise and feedback
-- **Open Source Community**: For the amazing libraries and tools
+## 🙏 Acknowledgments
+
 - **OpenAI**: For providing powerful GPT-4o-mini API for medical analysis
-- **AI Research**: For advancing medical NLP and analysis capabilities
+- **React & FastAPI Communities**: For amazing frameworks and support
+- **Healthcare Professionals**: For domain expertise and feedback
+- **Open Source Community**: For the incredible libraries and tools
+
+---
+
+## ⚠️ Medical Disclaimer
+
+**Important**: MediSense AI is designed as an assistive tool for healthcare professionals and is **not a substitute** for professional medical advice, diagnosis, or treatment. 
+
+- Always consult with qualified healthcare providers for medical decisions
+- The AI analysis should be used in conjunction with, not as a replacement for, professional medical judgment
+- This tool is for informational and educational purposes only
+- Not intended for use in clinical diagnosis or treatment planning without physician oversight
 
 ---
 
 <div align="center">
 
-**🏥 MediSense AI - Advanced Medical Intelligence Platform**
+### 🏥 MediSense AI - Transforming Healthcare Through Intelligent AI Analysis
 
-![Healthcare](https://img.shields.io/badge/Healthcare-Innovation-brightgreen?style=flat-square&logo=medical-cross)
-![AI](https://img.shields.io/badge/OpenAI-GPT4o--mini-blue?style=flat-square&logo=openai)
-![React](https://img.shields.io/badge/React-18.0-61dafb?style=flat-square&logo=react)
-![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688?style=flat-square&logo=fastapi)
-![Themes](https://img.shields.io/badge/Theme-Dark%2FLight-purple?style=flat-square&logo=material-design)
-![Downloads](https://img.shields.io/badge/Download-PDF%2FTXT%2FJSON-orange?style=flat-square&logo=download)
+![Healthcare](https://img.shields.io/badge/Healthcare-Innovation-brightgreen?style=for-the-badge&logo=medical-cross)
+![AI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=for-the-badge&logo=openai)
+![React](https://img.shields.io/badge/React-18.2-61dafb?style=for-the-badge&logo=react)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=for-the-badge&logo=fastapi)
 
-**✨ Now with Dynamic Risk Calculation, Theme System & Multi-format Downloads ✨**
+**✨ Now with Hospital-Grade Animations, Teal Theme & Enhanced AI Analysis ✨**
 
-*Transforming Healthcare Through Intelligent AI Analysis*
+*Made with ❤️ by Ritik Gupta*
+
+[⭐ Star this repo](https://github.com/ritik-gupta001/Medisure.AI) | [🐛 Report Bug](https://github.com/ritik-gupta001/Medisure.AI/issues) | [💡 Request Feature](https://github.com/ritik-gupta001/Medisure.AI/issues)
 
 </div>
