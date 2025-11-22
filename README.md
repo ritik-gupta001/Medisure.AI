@@ -132,6 +132,30 @@ Once both servers are running:
 
 ---
 
+## 🌐 Deployment
+
+### Deploy to Render (Recommended)
+
+MediSense AI is ready for one-click deployment to Render:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+**Quick Deploy Steps:**
+1. Click the button above or see detailed guide in [DEPLOYMENT.md](DEPLOYMENT.md)
+2. Connect your GitHub repository
+3. Add your `OPENAI_API_KEY` environment variable
+4. Deploy both backend and frontend services
+5. Access your live application!
+
+**Live URLs after deployment:**
+- Frontend: `https://medisense-ai-frontend.onrender.com`
+- Backend API: `https://medisense-ai-backend.onrender.com`
+- API Docs: `https://medisense-ai-backend.onrender.com/docs`
+
+For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
+
+---
+
 ## 📖 Usage
 
 1. **Upload Medical Document**: Drag & drop or click to upload PDF/image files
