@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 
+  (process.env.NODE_ENV === 'production' 
+    ? 'https://medisense-ai-backend.onrender.com' 
+    : 'http://localhost:8000');
+
+console.log('🔗 API Base URL:', API_BASE_URL, '| Environment:', process.env.NODE_ENV);
 
 class MediSenseAPIService {
   constructor() {
