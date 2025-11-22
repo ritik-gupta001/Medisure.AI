@@ -56,7 +56,7 @@ function App() {
     setAnalysis(null);
 
     try {
-      const result = await apiService.getDemo();
+      const result = await apiService.getDemoAnalysis();
       
       if (result.success && result.data) {
         console.log('✅ Demo analysis received:', result.data);
