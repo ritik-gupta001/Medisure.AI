@@ -12,9 +12,7 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
   const { currentColors } = useTheme();
   const [activeTab, setActiveTab] = useState('overview');
   const [uploadHistory, setUploadHistory] = useState([]);
-  const [apiHealth, setApiHealth] = useState(null);
   const [aiStatus, setAiStatus] = useState(null);
-  const [showAIChat, setShowAIChat] = useState(false);
   const [healthInsights, setHealthInsights] = useState(null);
 
   // Check API health and AI status on component mount

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
-import apiService from '../services/api';
 
 const DownloadReport = ({ analysis, patientName = 'Patient', style = {} }) => {
   const { currentColors } = useTheme();
