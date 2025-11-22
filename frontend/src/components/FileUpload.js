@@ -1,11 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, File, AlertCircle, Sparkles, Cpu, Zap } from 'lucide-react';
+import { Upload, AlertCircle, Sparkles, Cpu } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
-import ThemeToggle from './ThemeToggle';
 
 const FileUpload = ({ onUpload, isLoading = false, apiHealth = null }) => {
-  const { currentColors } = useTheme();
+  useTheme();
   const [uploadError, setUploadError] = useState(null);
   const [analysisMode, setAnalysisMode] = useState('llm'); // 'llm' or 'legacy'
 
@@ -55,14 +54,14 @@ const FileUpload = ({ onUpload, isLoading = false, apiHealth = null }) => {
           <div 
             className={`cursor-pointer rounded-lg border-2 p-4 transition-all ${
               analysisMode === 'llm' 
-                ? 'border-blue-500 bg-blue-50' 
-                : 'border-gray-200 hover:border-blue-300'
+                ? 'border-teal-500 bg-teal-50' 
+                : 'border-gray-200 hover:border-teal-300'
             }`}
             onClick={() => setAnalysisMode('llm')}
           >
             <div className="flex items-center space-x-3">
               <div className={`p-2 rounded-full ${
-                analysisMode === 'llm' ? 'bg-blue-500' : 'bg-gray-400'
+                analysisMode === 'llm' ? 'bg-teal-500' : 'bg-gray-400'
               }`}>
                 <Sparkles className="h-5 w-5 text-white" />
               </div>
@@ -81,7 +80,7 @@ const FileUpload = ({ onUpload, isLoading = false, apiHealth = null }) => {
                 type="radio"
                 checked={analysisMode === 'llm'}
                 onChange={() => setAnalysisMode('llm')}
-                className="text-blue-500"
+                className="text-teal-500"
                 disabled={apiHealth?.analyzers?.llm === 'needs_api_key'}
               />
             </div>
@@ -137,28 +136,33 @@ const FileUpload = ({ onUpload, isLoading = false, apiHealth = null }) => {
         <div className="flex flex-col items-center space-y-4">
           {isLoading ? (
             <>
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-medical-500"></div>
-              <div className="text-medical-600">
-                <p className="text-lg font-medium">Processing Document...</p>
-                <p className="text-sm text-gray-500">This may take a few moments</p>
+              <div className="relative">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-medical-500"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-6 h-6 bg-medical-500 rounded-full animate-pulse"></div>
+                </div>
+              </div>
+              <div className="text-medical-600 animate-slide-up">
+                <p className="text-lg font-medium">🏥 Processing Document...</p>
+                <p className="text-sm text-gray-500 animate-pulse">AI Analysis in Progress</p>
               </div>
             </>
           ) : (
             <>
-              <div className="p-3 bg-medical-100 rounded-full">
+              <div className="p-3 bg-medical-100 rounded-full animate-float">
                 {isDragReject ? (
-                  <AlertCircle className="h-8 w-8 text-red-500" />
+                  <AlertCircle className="h-8 w-8 text-red-500 animate-pulse" />
                 ) : (
-                  <Upload className="h-8 w-8 text-medical-600" />
+                  <Upload className={`h-8 w-8 text-medical-600 ${isDragActive ? 'animate-bounce' : ''}`} />
                 )}
               </div>
               
-              <div className="text-center">
+              <div className="text-center animate-slide-up">
                 <p className="text-lg font-medium text-gray-900">
                   {isDragActive ? (
-                    isDragReject ? 'File type not supported' : 'Drop your medical document here'
+                    isDragReject ? '❌ File type not supported' : '✨ Drop your medical document here'
                   ) : (
-                    'Upload Medical Document'
+                    '📄 Upload Medical Document'
                   )}
                 </p>
                 

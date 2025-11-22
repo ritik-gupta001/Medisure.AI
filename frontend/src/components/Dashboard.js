@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MedicalIcons, MedicalGradients } from './MedicalIcons';
+import { MedicalIcons, MedicalGradients, HospitalLogo } from './MedicalIcons';
 import VitalCharts from './VitalCharts';
 import RiskGauge from './RiskGauge';
 import AIChatInterface from './AIChatInterface';
@@ -85,14 +85,29 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
           paddingBottom: '24px',
           borderBottom: `1px solid ${currentColors.border}`
         }}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <HospitalLogo />
+            <div style={{ 
+              borderLeft: `2px solid ${currentColors.border}`, 
+              height: '48px',
+              margin: '0 4px'
+            }} />
             <MedicalIcons.Brain />
             <div style={{marginLeft: '12px'}}>
-              <h2 style={{fontSize: '1.5rem', fontWeight: 'bold', color: currentColors.text.primary, margin: 0}}>
-                MediSure AI
+              <h2 style={{
+                fontSize: '1.5rem', 
+                fontWeight: 'bold', 
+                color: currentColors.text.primary, 
+                margin: 0,
+                background: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+                MediSense AI
               </h2>
               <p style={{fontSize: '0.8rem', color: currentColors.text.secondary, margin: 0}}>
-                Medical Analysis Dashboard
+                🏥 Advanced Medical Analysis Platform
               </p>
             </div>
           </div>

@@ -127,7 +127,7 @@ const AIChatInterface = ({ analysisContext = null, onInsightGenerated = null }) 
       <div className={`flex ${isBot ? 'justify-start' : 'justify-end'} mb-4`}>
         <div className={`flex max-w-xs lg:max-w-md ${isBot ? 'flex-row' : 'flex-row-reverse'} items-end space-x-2`}>
           <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-            isBot ? 'bg-blue-500' : isError ? 'bg-red-500' : 'bg-green-500'
+            isBot ? 'bg-teal-500' : isError ? 'bg-red-500' : 'bg-green-500'
           }`}>
             {isBot ? <Bot size={16} className="text-white" /> : 
              isError ? <AlertCircle size={16} className="text-white" /> :
@@ -136,7 +136,7 @@ const AIChatInterface = ({ analysisContext = null, onInsightGenerated = null }) 
           <div className={`px-4 py-2 rounded-lg ${
             isBot ? 'bg-gray-100 text-gray-800' : 
             isError ? 'bg-red-100 text-red-800 border border-red-200' :
-            'bg-blue-500 text-white'
+            'bg-teal-500 text-white'
           }`}>
             <p className="text-sm whitespace-pre-wrap">{message.content}</p>
             {message.sources && message.sources.length > 0 && (
@@ -162,7 +162,7 @@ const AIChatInterface = ({ analysisContext = null, onInsightGenerated = null }) 
     return (
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-center space-x-2">
-          <Loader className="animate-spin text-blue-500" size={20} />
+          <Loader className="animate-spin text-teal-500" size={20} />
           <span className="text-gray-600">Checking AI Chat availability...</span>
         </div>
       </div>
@@ -179,8 +179,8 @@ const AIChatInterface = ({ analysisContext = null, onInsightGenerated = null }) 
         <p className="text-gray-600 mb-4">
           The AI chat feature requires API keys to be configured. Please contact your administrator to enable this feature.
         </p>
-        <div className="bg-blue-50 p-4 rounded-lg">
-          <p className="text-sm text-blue-800">
+        <div className="bg-teal-50 p-4 rounded-lg">
+          <p className="text-sm text-teal-800">
             <strong>To enable AI Chat:</strong><br />
             1. Set up OpenAI or Anthropic API keys<br />
             2. Configure the .env file<br />
@@ -197,7 +197,7 @@ const AIChatInterface = ({ analysisContext = null, onInsightGenerated = null }) 
     }`}>
       {/* Chat Header */}
       <div 
-        className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-t-lg cursor-pointer"
+        className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-t-lg cursor-pointer"
         onClick={() => setIsMinimized(!isMinimized)}
       >
         <div className="flex items-center space-x-2">
@@ -221,7 +221,7 @@ const AIChatInterface = ({ analysisContext = null, onInsightGenerated = null }) 
                   <button
                     key={idx}
                     onClick={() => setInputMessage(question)}
-                    className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1 rounded-full transition-colors"
+                    className="text-xs bg-teal-50 hover:bg-teal-100 text-teal-700 px-3 py-1 rounded-full transition-colors"
                   >
                     {question}
                   </button>
@@ -256,13 +256,13 @@ const AIChatInterface = ({ analysisContext = null, onInsightGenerated = null }) 
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about medical reports, health advice, or any health questions..."
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                 disabled={isLoading}
               />
               <button
                 onClick={sendMessage}
                 disabled={!inputMessage.trim() || isLoading}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <Send size={16} />
               </button>

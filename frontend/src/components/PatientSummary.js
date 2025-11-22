@@ -107,8 +107,8 @@ const PatientSummary = ({ summary, isLoading = false }) => {
       {/* Patient-Friendly Summary */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-3">What This Means for You</h3>
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
-          <p className="text-blue-900 leading-relaxed">{summary.summary_text}</p>
+        <div className="bg-teal-50 border-l-4 border-teal-400 p-4 rounded-lg">
+          <p className="text-teal-900 leading-relaxed">{summary.summary_text}</p>
         </div>
       </div>
 

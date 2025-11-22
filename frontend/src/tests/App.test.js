@@ -149,11 +149,11 @@ describe('MediSense AI Frontend Tests', () => {
 
     // Simulate drag enter
     fireEvent.dragEnter(dropZone);
-    expect(dropZone).toHaveClass('border-blue-400');
+    expect(dropZone).toHaveClass('border-teal-400');
 
     // Simulate drag leave
     fireEvent.dragLeave(dropZone);
-    expect(dropZone).not.toHaveClass('border-blue-400');
+    expect(dropZone).not.toHaveClass('border-teal-400');
   });
 
   test('responsive design elements', () => {

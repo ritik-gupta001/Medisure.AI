@@ -2,80 +2,209 @@
 
 **Advanced AI-Powered Medical Report Analysis Platform**
 
-A comprehensive medical document analysis system that leverages OpenAI GPT-4o-mini and advanced AI to transform medical reports into actionable insights. Features dynamic risk calculation, dark/light themes, and multi-format report downloads.
+A comprehensive medical document analysis system that leverages OpenAI GPT-4o-mini and advanced AI to transform medical reports into actionable insights. Features dynamic risk calculation, hospital-grade animations, and a beautiful teal-themed interface.
 
 ## 🌟 Key Features
 
 ### 🎯 **Core Functionality**
 - **📄 PDF Analysis**: Upload medical reports for comprehensive AI analysis with OpenAI integration
-- **🧠 Dynamic Risk Assessment**: Real AI-calculated risk percentages (NO MORE 85% HALLUCINATION!)
+- **🧠 Dynamic Risk Assessment**: Real AI-calculated risk percentages
 - **📊 Interactive Visualizations**: Real-time charts, gauges, and medical insights
 - **🌙 Dark/Light Mode**: Complete theme system with user preference persistence
 - **📥 Download Reports**: Export analysis in PDF, TXT, and JSON formats
+- **💬 AI Medical Chat**: Interactive medical assistant for health questions
 - **⚡ Optimized Performance**: Fast analysis with intelligent timeout handling
 
 ### 🎨 **Professional Interface**
-- **🖥️ Modern UI**: Clean, medical-grade interface with theme support
+- **🏥 Hospital Logo**: Professional medical cross logo with animations
+- **🖥️ Modern Teal UI**: Beautiful medical-grade interface with teal color scheme
 - **📱 Responsive Design**: Works seamlessly on all devices
+- **✨ Hospital-Level Animations**: Smooth pulse, float, and heartbeat effects
 - **🎯 Intuitive Navigation**: User-friendly upload and analysis workflow
-- **⚡ Smooth Animations**: Professional transitions and loading states
 
-### � **AI Intelligence**
+### 🤖 **AI Intelligence**
 - **OpenAI GPT-4o-mini**: Latest AI model for medical analysis
 - **Dynamic Risk Calculation**: Real percentage calculation based on content analysis
 - **Intelligent Fallbacks**: Robust error handling with backup analysis systems
 - **Medical Knowledge Base**: Comprehensive medical guidelines and reference data
 
-## 🚀 Quick Start
+---
 
-### 1. Configure Environment
-Create/edit the `.env` file:
+## 🚀 Quick Start Guide
+
+### Prerequisites
+- **Python 3.8+**
+- **Node.js 14+** and **npm**
+- **OpenAI API Key** (for AI features)
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/ritik-gupta001/Medisure.AI.git
+cd "MediSense AI"
+```
+
+### 2️⃣ Backend Setup
+
+**Create and activate virtual environment:**
+```bash
+# Create virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# Windows PowerShell:
+.\venv\Scripts\Activate.ps1
+
+# Windows CMD:
+venv\Scripts\activate.bat
+
+# macOS/Linux:
+source venv/bin/activate
+```
+
+**Install Python dependencies:**
+```bash
+pip install -r requirements.txt
+```
+
+### 3️⃣ Frontend Setup
+```bash
+cd frontend
+npm install
+cd ..
+```
+
+### 4️⃣ Configure Environment Variables
+
+Create a `.env` file in the project root:
 ```env
 OPENAI_API_KEY=your-openai-api-key-here
 ```
 
-### 2. Install Dependencies
-```bash
-# Backend dependencies
-pip install -r requirements.txt
+### 5️⃣ Run the Application
 
-# Frontend dependencies  
-cd frontend
-npm install
+**Option A: Run Both Servers (Recommended)**
+
+Open **two separate terminals**:
+
+**Terminal 1 - Backend:**
+```bash
+# Activate virtual environment first
+.\venv\Scripts\Activate.ps1
+
+# Run backend
+python -m uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### 3. Start the Application
-
-**Option A: Manual Start**
+**Terminal 2 - Frontend:**
 ```bash
-# Terminal 1: Start Backend
-python app.py
-
-# Terminal 2: Start Frontend
 cd frontend
 npm start
 ```
 
-**Option B: Using Provided Scripts**
+**Option B: Manual Python Start**
 ```bash
-# Windows
-.\start-servers.bat
-
-# PowerShell
-.\run-medisense.ps1
+# Activate venv, then:
+python app.py
 ```
 
-### 4. Access the Application
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000  
-- **API Documentation**: http://localhost:8000/docs
-- Use the AI chat assistant for medical questions
+### 6️⃣ Access the Application
 
-## ✨ Key Features
-- 🔍 AI-powered medical document analysis
-- 📊 Comprehensive health reports  
-- 💬 Smart medical chat assistant
-- 📈 Risk assessment and recommendations
+Once both servers are running:
+- **🌐 Frontend UI**: http://localhost:3000
+- **⚙️ Backend API**: http://localhost:8000
+- **📚 API Docs**: http://localhost:8000/docs
+
+---
+
+## 📖 Usage
+
+1. **Upload Medical Document**: Drag & drop or click to upload PDF/image files
+2. **Choose Analysis Mode**: 
+   - 🤖 AI-Powered Analysis (requires OpenAI API key)
+   - 🔧 Rule-Based Analysis (always available)
+3. **View Results**: Interactive dashboard with charts and insights
+4. **Chat with AI**: Ask questions about your medical report
+5. **Download Report**: Export in PDF, TXT, or JSON format
+
+---
+
+## 🛠️ Technology Stack
+
+### Backend
+- **FastAPI**: High-performance Python web framework
+- **LangChain**: AI/LLM orchestration
+- **OpenAI GPT-4o-mini**: Medical document analysis
+- **PyPDF2**: PDF processing
+- **ChromaDB & FAISS**: Vector storage
+
+### Frontend
+- **React 18**: Modern UI framework
+- **Tailwind CSS**: Utility-first styling
+- **Plotly.js & Recharts**: Data visualization
+- **Lucide React**: Beautiful icons
+- **Axios**: HTTP client
+
+---
+
+## 📁 Project Structure
+
+```
+MediSense AI/
+├── app.py                      # FastAPI backend server
+├── intelligent_analyzer.py     # Rule-based medical analyzer
+├── llm_analyzer.py            # AI-powered LLM analyzer
+├── requirements.txt           # Python dependencies
+├── .env                       # Environment variables
+├── frontend/
+│   ├── src/
+│   │   ├── components/        # React components
+│   │   ├── contexts/          # Theme & state management
+│   │   ├── services/          # API services
+│   │   └── utils/             # Utility functions
+│   ├── public/                # Static assets
+│   └── package.json           # Node dependencies
+└── README.md                  # This file
+```
+
+---
+
+## 🔧 Development
+
+### Backend Development
+```bash
+# Run with auto-reload
+uvicorn app:app --reload --port 8000
+```
+
+### Frontend Development
+```bash
+cd frontend
+npm start  # Runs on port 3000 with hot reload
+```
+
+### Build for Production
+```bash
+cd frontend
+npm run build  # Creates optimized production build
+```
+
+---
+
+## 🎨 Features Showcase
+
+### Hospital-Grade Animations
+- ✨ Floating elements
+- 💓 Heartbeat pulse effects
+- 🔄 Smooth transitions
+- 📊 Animated data visualization
+
+### Teal Color Theme
+- Modern medical teal palette
+- Consistent branding
+- Professional appearance
+- Dark/Light mode support
+
+---
 
 ## Prerequisites
 
@@ -87,7 +216,7 @@ npm start
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/ritik-gupta001/MediSense.AI
+git clone https://github.com/ritik-gupta001/Medisure.AI
 cd medisense-ai
 ```
 
@@ -299,18 +428,30 @@ cd frontend
 npm run build
 ```
 
-##  Testing
+---
 
-### Backend Tests
-```bash
-pytest tests/
-```
+## 🤝 Contributing
 
-### Frontend Tests
-```bash
-cd frontend
-npm test
-```
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 👨‍💻 Author
+
+**Ritik Gupta**
+- GitHub: [@ritik-gupta001](https://github.com/ritik-gupta001)
+
+## 🙏 Acknowledgments
+
+- OpenAI for GPT-4o-mini API
+- React and FastAPI communities
+- Medical data visualization libraries
+
+---
+
+**⚠️ Disclaimer**: This tool is for informational purposes only and should not replace professional medical advice. Always consult with healthcare professionals for medical decisions.
 
 ### E2E Testing
 ```bash

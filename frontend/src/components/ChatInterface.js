@@ -184,7 +184,7 @@ const ChatInterface = ({ sessionId, analysisData, isVisible = false, onClose }) 
                       
                       {/* Context reference */}
                       {message.contextLine && (
-                        <div className="mb-2 p-2 bg-blue-100 rounded text-xs">
+                        <div className="mb-2 p-2 bg-teal-100 rounded text-xs">
                           <Quote className="h-3 w-3 inline mr-1" />
                           "{message.contextLine}"
                         </div>
@@ -256,15 +256,15 @@ const ChatInterface = ({ sessionId, analysisData, isVisible = false, onClose }) 
 
             {/* Context selection bar */}
             {selectedContext && (
-              <div className="px-4 py-2 bg-blue-50 border-t border-blue-200">
+              <div className="px-4 py-2 bg-teal-50 border-t border-teal-200">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center text-sm text-blue-800">
+                  <div className="flex items-center text-sm text-teal-800">
                     <Quote className="h-4 w-4 mr-2" />
                     <span>Asking about: "{selectedContext.length > 60 ? selectedContext.substring(0, 60) + '...' : selectedContext}"</span>
                   </div>
                   <button
                     onClick={() => setSelectedContext(null)}
-                    className="text-blue-600 hover:text-blue-800"
+                    className="text-teal-600 hover:text-teal-800"
                   >
                     ✕
                   </button>
@@ -343,9 +343,9 @@ const ChatInterface = ({ sessionId, analysisData, isVisible = false, onClose }) 
                       <button
                         key={`doctor-${index}`}
                         onClick={() => handleContextSelect(treatment.intervention)}
-                        className="w-full text-left p-2 text-xs bg-white border border-gray-200 rounded hover:border-blue-300 hover:bg-blue-50 transition-colors"
+                        className="w-full text-left p-2 text-xs bg-white border border-gray-200 rounded hover:border-teal-300 hover:bg-teal-50 transition-colors"
                       >
-                        <div className="text-blue-700 font-medium mb-1">Treatment</div>
+                        <div className="text-teal-700 font-medium mb-1">Treatment</div>
                         <div className="text-gray-600 truncate">{treatment.intervention}</div>
                       </button>
                     ))}
