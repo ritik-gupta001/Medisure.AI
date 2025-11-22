@@ -142,28 +142,9 @@ Once both servers are running:
 
 ## 🌐 Deployment
 
-### Deploy to Vercel (Recommended)
+### Deploy to Render (Recommended)
 
-MediSense AI is ready for deployment to Vercel with one click:
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/ritik-gupta001/Medisure.AI)
-
-**Quick Deploy Steps:**
-1. Click the button above or see detailed guide in [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
-2. Connect your GitHub account
-3. Add your `OPENAI_API_KEY` environment variable
-4. Deploy!
-
-**Live URLs after deployment:**
-- Frontend: `https://your-app.vercel.app`
-- API: `https://your-app.vercel.app/api`
-- Health Check: `https://your-app.vercel.app/api/health`
-
-For complete deployment instructions, see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md)
-
-### Deploy to Render (Alternative)
-
-MediSense AI can also be deployed to Render:
+MediSense AI is ready for one-click deployment to Render:
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
