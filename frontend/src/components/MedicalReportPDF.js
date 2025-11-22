@@ -80,28 +80,6 @@ const MedicalReportPDF = ({ analysis, patientInfo = {}, style = {} }) => {
     };
   };
 
-  const getSeverityIcon = (severity) => {
-    const icons = {
-      critical: <AlertTriangle className="h-5 w-5 text-red-600" />,
-      high: <AlertTriangle className="h-5 w-5 text-orange-600" />,
-      moderate: <Info className="h-5 w-5 text-yellow-600" />,
-      mild: <Info className="h-5 w-5 text-blue-600" />,
-      normal: <CheckCircle className="h-5 w-5 text-green-600" />,
-      optimal: <CheckCircle className="h-5 w-5 text-teal-600" />
-    };
-    return icons[severity] || icons.normal;
-  };
-
-  const getCategoryIcon = (category) => {
-    const icons = {
-      cardiovascular: <Heart className="h-5 w-5" />,
-      metabolic: <Activity className="h-5 w-5" />,
-      respiratory: <Wind className="h-5 w-5" />,
-      neurological: <Brain className="h-5 w-5" />
-    };
-    return icons[category] || <Activity className="h-5 w-5" />;
-  };
-
   const downloadMedicalReportPDF = (report) => {
     const htmlContent = generateMedicalReportHTML(report);
     const blob = new Blob([htmlContent], { type: 'text/html' });
