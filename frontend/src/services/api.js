@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000';
+// Use environment variable if available, otherwise use relative URL for production
+const API_BASE_URL = process.env.REACT_APP_API_URL || (
+  process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000'
+);
 
 class MediSenseAPIService {
   constructor() {
@@ -12,7 +15,7 @@ class MediSenseAPIService {
       },
     });
     
-    console.log('✅ API configured for:', API_BASE_URL);
+    console.log('✅ API configured for:', API_BASE_URL || 'same origin');
   }
 
   async analyzeDocument(file, useLLM = true) {

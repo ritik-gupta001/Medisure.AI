@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import uvicorn
 from intelligent_analyzer import MedicalTextAnalyzer
@@ -11,6 +12,7 @@ import io
 import os
 from typing import Optional
 from dotenv import load_dotenv
+from pathlib import Path
 
 # Load environment variables from .env file
 load_dotenv()
@@ -320,6 +322,25 @@ async def get_demo_analysis():
     except Exception as e:
         logger.error(f"Error in demo analysis: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Demo analysis failed: {str(e)}")
+
+# Mount static files and serve React app
+frontend_build_path = Path(__file__).parent / "frontend" / "build"
+if frontend_build_path.exists():
+    app.mount("/static", StaticFiles(directory=str(frontend_build_path / "static")), name="static")
+    
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        """Serve React app for all non-API routes"""
+        # Don't intercept API routes
+        if full_path.startswith(("api/", "health", "docs", "redoc", "openapi.json")):
+            raise HTTPException(status_code=404)
+        
+        # Serve index.html for all other routes (React Router handles routing)
+        index_file = frontend_build_path / "index.html"
+        if index_file.exists():
+            return FileResponse(index_file)
+        raise HTTPException(status_code=404)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
