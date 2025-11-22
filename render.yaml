@@ -19,10 +19,8 @@ services:
     autoDeploy: true
 
   # Frontend Static Site
-  - type: web
+  - type: static
     name: medisense-ai-frontend
-    runtime: node
-    plan: free
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: ./frontend/build
     envVars:
