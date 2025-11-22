@@ -17,25 +17,3 @@ services:
         value: ./faiss_index
     healthCheckPath: /health
     autoDeploy: true
-
-  # Frontend Static Site
-  - type: static
-    name: medisense-ai-frontend
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: ./frontend/build
-    envVars:
-      - key: NODE_VERSION
-        value: 18.17.0
-      - key: REACT_APP_API_URL
-        value: https://medisense-ai-backend.onrender.com
-    headers:
-      - path: /*
-        name: X-Frame-Options
-        value: DENY
-      - path: /*
-        name: X-Content-Type-Options
-        value: nosniff
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
