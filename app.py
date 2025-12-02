@@ -121,9 +121,15 @@ async def analyze_document(file: UploadFile = File(...), use_llm: bool = True):
             raise HTTPException(status_code=400, detail=f"Failed to extract text from PDF: {str(e)}")
         
         # Choose analysis method
-        if use_llm and (os.getenv('OPENAI_API_KEY') or os.getenv('ANTHROPIC_API_KEY')):
-            logger.info("Using LLM-powered analysis")
-            analysis_result = analyze_medical_document_llm(text_content)
+        logger.info(f"Analysis requested with use_llm={use_llm}")
+        if use_llm:
+            try:
+                logger.info("Attempting LLM-powered analysis")
+                analysis_result = analyze_medical_document_llm(text_content)
+                logger.info("✅ LLM analysis completed successfully")
+            except Exception as llm_error:
+                logger.warning(f"⚠️ LLM analysis failed: {str(llm_error)}, falling back to legacy")
+                analysis_result = legacy_analyzer.analyze_medical_document(text_content, file.filename)
         else:
             logger.info("Using legacy rule-based analysis")
             analysis_result = legacy_analyzer.analyze_medical_document(text_content, file.filename)
