@@ -131,7 +131,12 @@ Always maintain professional medical ethics and patient safety as top priorities
                 return
             
             # Get API key from environment or .env file
-            api_key = os.getenv("OPENAI_API_KEY")
+            api_key = os.getenv("OPENAI_API_KEY") or os.getenv("OPENAI_KEY")
+            
+            # Debug: Log environment variables (without exposing the key)
+            all_env_keys = list(os.environ.keys())
+            logger.info(f"🔍 Environment variables available: {[k for k in all_env_keys if 'OPENAI' in k or 'API' in k]}")
+            logger.info(f"🔑 API key found: {bool(api_key)}, Length: {len(api_key) if api_key else 0}")
             
             # If not found in environment, try to load from .env file directly
             if not api_key:
@@ -142,10 +147,12 @@ Always maintain professional medical ethics and patient safety as top priorities
                                 api_key = line.split('=', 1)[1].strip()
                                 break
                 except FileNotFoundError:
+                    logger.info("📁 No .env file found")
                     pass
             
             if not api_key:
-                logger.warning("OPENAI_API_KEY not found in environment or .env file")
+                logger.warning("❌ OPENAI_API_KEY not found in environment or .env file")
+                logger.warning(f"💡 Available env vars: {sorted([k for k in os.environ.keys()])[:10]}")
                 return
             
             # Initialize OpenAI client with just the API key
