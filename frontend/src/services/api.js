@@ -5,7 +5,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || (
   process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000'
 );
 
-class MediSenseAPIService {
+class MediSureAPIService {
   constructor() {
     this.apiClient = axios.create({
       baseURL: API_BASE_URL,
@@ -127,5 +127,5 @@ class MediSenseAPIService {
   }
 }
 
-const apiService = new MediSenseAPIService();
+const apiService = new MediSureAPIService();
 export default apiService;

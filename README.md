@@ -1,10 +1,10 @@
-# 🏥 MediSense AI
+# 🏥 MediSure AI
 
 **Advanced AI-Powered Medical Report Analysis Platform**
 
 A comprehensive medical document analysis system that leverages OpenAI GPT-4o-mini and advanced AI to transform medical reports into actionable insights. Features dynamic risk calculation, hospital-grade animations, and a beautiful teal-themed interface.
 
-![MediSense AI](https://img.shields.io/badge/React-18.2.0-blue?logo=react)
+![MediSure AI](https://img.shields.io/badge/React-18.2.0-blue?logo=react)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104.1-green?logo=fastapi)
 ![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-purple?logo=openai)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
@@ -55,7 +55,7 @@ A comprehensive medical document analysis system that leverages OpenAI GPT-4o-mi
 ### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/ritik-gupta001/Medisure.AI.git
-cd "MediSense AI"
+cd Medisure.AI
 ```
 
 ### 2️⃣ Backend Setup
@@ -140,30 +140,6 @@ Once both servers are running:
 
 ---
 
-## 🌐 Deployment
-
-### Deploy to Render (Recommended)
-
-MediSense AI is ready for one-click deployment to Render:
-
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
-
-**Quick Deploy Steps:**
-1. Click the button above or see detailed guide in [DEPLOYMENT.md](DEPLOYMENT.md)
-2. Connect your GitHub repository
-3. Add your `OPENAI_API_KEY` environment variable
-4. Deploy both backend and frontend services
-5. Access your live application!
-
-**Live URLs after deployment:**
-- Frontend: `https://medisense-ai-frontend.onrender.com`
-- Backend API: `https://medisense-ai-backend.onrender.com`
-- API Docs: `https://medisense-ai-backend.onrender.com/docs`
-
-For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
-
----
-
 ## 📖 Usage
 
 1. **Upload Medical Document**: Drag & drop or click to upload PDF/image files
@@ -197,7 +173,7 @@ For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
 ## 📁 Project Structure
 
 ```
-MediSense AI/
+MediSure AI/
 ├── app.py                      # FastAPI backend server
 ├── intelligent_analyzer.py     # Rule-based medical analyzer
 ├── llm_analyzer.py            # AI-powered LLM analyzer
@@ -273,7 +249,7 @@ npm run build  # Creates optimized production build
 ## 📁 Project Structure
 
 ```
-MediSense AI/
+MediSure AI/
 ├── 📄 README.md                    # Project documentation  
 ├── 🐍 app.py                       # FastAPI backend server
 ├── 🧠 intelligent_analyzer.py      # Core AI analysis engine
@@ -595,7 +571,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## ⚠️ Medical Disclaimer
 
-**Important**: MediSense AI is designed as an assistive tool for healthcare professionals and is **not a substitute** for professional medical advice, diagnosis, or treatment. 
+**Important**: MediSure AI is designed as an assistive tool for healthcare professionals and is **not a substitute** for professional medical advice, diagnosis, or treatment. 
 
 - Always consult with qualified healthcare providers for medical decisions
 - The AI analysis should be used in conjunction with, not as a replacement for, professional medical judgment
@@ -606,7 +582,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 <div align="center">
 
-### 🏥 MediSense AI - Transforming Healthcare Through Intelligent AI Analysis
+### 🏥 MediSure AI - Transforming Healthcare Through Intelligent AI Analysis
 
 ![Healthcare](https://img.shields.io/badge/Healthcare-Innovation-brightgreen?style=for-the-badge&logo=medical-cross)
 ![AI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=for-the-badge&logo=openai)

@@ -1,7 +1,7 @@
 {
-  "name": "medisense-frontend",
+  "name": "medisure-ai-frontend",
   "version": "1.0.0",
-  "description": "MediSense AI - Medical Analysis Frontend",
+  "description": "MediSure AI - Medical Analysis Frontend",
   "private": true,
   "dependencies": {
     "@headlessui/react": "^1.7.17",

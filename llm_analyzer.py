@@ -104,7 +104,7 @@ class IntelligentLLMAnalyzer:
         self._initialize_openai()
         
         # Medical AI system prompt
-        self.system_prompt = """You are MediSense AI, an advanced medical AI assistant designed to help analyze medical documents and provide healthcare insights.
+        self.system_prompt = """You are MediSure AI, an advanced medical AI assistant designed to help analyze medical documents and provide healthcare insights.
 
 IMPORTANT GUIDELINES:
 - Always emphasize that you provide informational support, not medical diagnosis
@@ -331,7 +331,7 @@ Please provide a helpful, accurate response about this medical question. Remembe
             return {
                 "response": ai_response,
                 "sources": ["Medical knowledge base", "Clinical guidelines"],
-                "conversation_id": f"medisense_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+                "conversation_id": f"medisure_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
                 "timestamp": datetime.now().isoformat(),
                 "ai_powered": True,
                 "confidence": 95
@@ -434,7 +434,7 @@ Please provide specific insights in JSON format:
     def _create_fallback_chat_response(self, message: str, error: str = None) -> Dict[str, Any]:
         """Create fallback chat response when AI is unavailable"""
         return {
-            "response": f"Hello! I'm MediSense AI. Currently, my advanced AI features require API key configuration. Please set up your OPENAI_API_KEY to enable intelligent medical conversations. {f'Error: {error}' if error else ''}\n\nFor now, I recommend consulting with healthcare professionals for medical questions.",
+            "response": f"Hello! I'm MediSure AI. Currently, my advanced AI features require API key configuration. Please set up your OPENAI_API_KEY to enable intelligent medical conversations. {f'Error: {error}' if error else ''}\n\nFor now, I recommend consulting with healthcare professionals for medical questions.",
             "sources": [],
             "conversation_id": f"fallback_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
             "timestamp": datetime.now().isoformat(),

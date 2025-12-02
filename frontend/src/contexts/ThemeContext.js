@@ -13,7 +13,7 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     // Check localStorage for saved theme preference
-    const savedTheme = localStorage.getItem('medisense-theme');
+    const savedTheme = localStorage.getItem('medisure-theme');
     if (savedTheme) {
       return savedTheme === 'dark';
     }
@@ -23,7 +23,7 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     // Save theme preference to localStorage
-    localStorage.setItem('medisense-theme', isDarkMode ? 'dark' : 'light');
+    localStorage.setItem('medisure-theme', isDarkMode ? 'dark' : 'light');
     
     // Apply theme to document root
     if (isDarkMode) {

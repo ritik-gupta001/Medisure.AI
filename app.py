@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
-    title="MediSense AI", 
+    title="MediSure AI", 
     description="Advanced AI-Powered Medical Report Analysis API with LLM and RAG",
     version="2.0.0"
 )
@@ -34,10 +34,7 @@ app.add_middleware(
         "http://localhost:3000", 
         "http://127.0.0.1:3000",
         "https://*.netlify.app",
-        "https://medisense-ai.netlify.app",
-        "https://*.onrender.com",
-        "https://medisense-ai-frontend.onrender.com",
-        "https://medisurre-ai.onrender.com"
+        "https://*.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -82,7 +79,7 @@ def extract_text_from_pdf(pdf_content):
 @app.get("/")
 async def root():
     return {
-        "message": "MediSense AI - Advanced Medical Report Analysis API", 
+        "message": "MediSure AI - Advanced Medical Report Analysis API", 
         "status": "running",
         "version": "2.0.0",
         "features": ["LLM Analysis", "RAG Support", "AI Chatbot", "Medical Knowledge Base"]

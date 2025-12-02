@@ -99,7 +99,7 @@ const Dashboard = ({ analysis, onNewUpload, onDemo, loading, error }) => {
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
               }}>
-                MediSense AI
+                MediSure AI
               </h2>
               <p style={{fontSize: '0.8rem', color: currentColors.text.secondary, margin: 0}}>
                 🏥 Advanced Medical Analysis Platform
