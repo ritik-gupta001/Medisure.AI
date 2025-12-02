@@ -156,9 +156,22 @@ Always maintain professional medical ethics and patient safety as top priorities
                 return
             
             # Initialize OpenAI client with just the API key
-            self.openai_client = openai.OpenAI(api_key=api_key)
-            self.api_key_configured = True
-            logger.info("✅ OpenAI client initialized successfully")
+            try:
+                self.openai_client = openai.OpenAI(api_key=api_key)
+                self.api_key_configured = True
+                logger.info("✅ OpenAI client initialized successfully")
+            except Exception as init_error:
+                logger.error(f"❌ Failed to initialize OpenAI client: {str(init_error)}")
+                logger.info("🔧 Trying alternative initialization...")
+                try:
+                    # Alternative: Set API key globally
+                    openai.api_key = api_key
+                    self.openai_client = openai
+                    self.api_key_configured = True
+                    logger.info("✅ OpenAI configured with global API key")
+                except Exception as e:
+                    logger.error(f"❌ All initialization methods failed: {str(e)}")
+                    return
             
             # Test the connection
             try:
