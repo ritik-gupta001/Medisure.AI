@@ -392,7 +392,7 @@ Health check endpoint
 - ** Access Control**: Role-based permissions system ready
 - ** Session Management**: Secure user session handling
 
-##  Deployment
+## 🚀 Deployment
 
 ### Development
 ```bash
@@ -403,11 +403,44 @@ python app.py
 cd frontend && npm start
 ```
 
-### Production
+### Production with Zeabur
+
+MediSure AI is optimized for **Zeabur** deployment with pre-configured settings.
+
+#### Quick Deploy to Zeabur
+
+1. **Sign up at [zeabur.com](https://zeabur.com)** with your GitHub account
+
+2. **Create New Project** and select `ritik-gupta001/Medisure.AI`
+
+3. **Deploy Backend (FastAPI)**
+   - Zeabur auto-detects `.zeabur.json` and `zbpack.json`
+   - Click "Deploy"
+   - Add environment variables:
+     - `OPENAI_API_KEY` = your-openai-api-key
+     - `PORT` = 8000
+
+4. **Deploy Frontend (React)**
+   - Add new service in same project
+   - Select `frontend` directory
+   - Zeabur auto-detects `package.json`
+   - After backend is live, add:
+     - `REACT_APP_API_URL` = your-backend-zeabur-url
+
+5. **Access Your App**
+   - Backend: `https://your-backend.zeabur.app`
+   - Frontend: `https://your-frontend.zeabur.app`
+
+#### Deployment Files Included
+- `.zeabur.json` - Backend Zeabur configuration
+- `zbpack.json` - Build settings
+- `Procfile` - Process configuration
+- `frontend/.zeabur.json` - Frontend Zeabur configuration
+
+#### Alternative Deployment Options
 ```bash
-# Backend with Gunicorn
-pip install gunicorn
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker app:app
+# Backend with Uvicorn
+uvicorn app:app --host 0.0.0.0 --port 8000
 
 # Frontend build
 cd frontend
