@@ -1,0 +1,6 @@
+{
+  "name": "medisense-frontend",
+  "type": "static",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "build"
+}

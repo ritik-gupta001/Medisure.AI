@@ -1,0 +1,7 @@
+{
+  "name": "medisense-backend",
+  "type": "python",
+  "env": {
+    "PORT": "8080"
+  }
+}
