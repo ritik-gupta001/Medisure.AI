@@ -124,7 +124,7 @@ Your expertise includes:
 Always maintain professional medical ethics and patient safety as top priorities."""
 
     def _initialize_openai(self):
-        """Initialize OpenAI client with API key"""
+        """Initialize OpenAI client with API key - v2.0"""
         try:
             if not OPENAI_AVAILABLE:
                 logger.warning("OpenAI library not available")
