@@ -192,10 +192,18 @@ Always maintain professional medical ethics and patient safety as top priorities
         """
         logger.info("🔍 Starting AI-powered medical document analysis")
         
-        if not self.api_key_configured:
+        # Try to get API key directly
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            logger.warning("No API key found, using fallback")
             return self._create_fallback_analysis(document_text)
         
         try:
+            # Create OpenAI client on-demand to avoid initialization issues
+            from openai import OpenAI
+            client = OpenAI(api_key=api_key)
+            logger.info("✅ Created OpenAI client for this analysis")
+            
             # Get relevant medical context
             medical_context = self.knowledge_base.get_medical_context(document_text)
             
@@ -240,7 +248,7 @@ Please provide a detailed medical analysis in JSON format with these exact field
 }}"""
 
             # Get AI analysis
-            response = self.openai_client.chat.completions.create(
+            response = client.chat.completions.create(
                 model="gpt-4o-mini",  # Use the configured model
                 messages=[
                     {"role": "system", "content": self.system_prompt},
