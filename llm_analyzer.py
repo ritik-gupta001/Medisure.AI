@@ -201,11 +201,11 @@ Always maintain professional medical ethics and patient safety as top priorities
             return self._create_fallback_analysis(document_text)
         
         try:
-            # Create OpenAI client on-demand to avoid initialization issues
-            logger.info("🔧 Attempting to create OpenAI client...")
-            from openai import OpenAI
-            client = OpenAI(api_key=api_key)
-            logger.info("✅ Created OpenAI client for this analysis")
+            # Use old-style openai module API to avoid Client class issues
+            logger.info("🔧 Configuring OpenAI with old-style API...")
+            import openai
+            openai.api_key = api_key
+            logger.info("✅ OpenAI API key configured")
             
             # Get relevant medical context
             logger.info("📚 Getting medical context...")
@@ -251,8 +251,8 @@ Please provide a detailed medical analysis in JSON format with these exact field
     ]
 }}"""
 
-            # Get AI analysis
-            response = client.chat.completions.create(
+            # Get AI analysis using old-style API
+            response = openai.ChatCompletion.create(
                 model="gpt-4o-mini",  # Use the configured model
                 messages=[
                     {"role": "system", "content": self.system_prompt},
