@@ -157,32 +157,27 @@ Always maintain professional medical ethics and patient safety as top priorities
             
             # Initialize OpenAI client with just the API key
             try:
-                self.openai_client = openai.OpenAI(api_key=api_key)
+                from openai import OpenAI
+                self.openai_client = OpenAI(api_key=api_key)
                 self.api_key_configured = True
                 logger.info("✅ OpenAI client initialized successfully")
+                
+                # Test the connection
+                try:
+                    test_response = self.openai_client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        messages=[{"role": "user", "content": "Hi"}],
+                        max_tokens=5
+                    )
+                    logger.info("✅ OpenAI API connection verified")
+                    logger.info("✅ OpenAI client ready (test skipped)")
+                except Exception as test_err:
+                    logger.warning(f"⚠️ OpenAI API test failed (but client initialized): {test_err}")
+                    
             except Exception as init_error:
                 logger.error(f"❌ Failed to initialize OpenAI client: {str(init_error)}")
-                logger.info("🔧 Trying alternative initialization...")
-                try:
-                    # Alternative: Set API key globally
-                    openai.api_key = api_key
-                    self.openai_client = openai
-                    self.api_key_configured = True
-                    logger.info("✅ OpenAI configured with global API key")
-                except Exception as e:
-                    logger.error(f"❌ All initialization methods failed: {str(e)}")
-                    return
-            
-            # Test the connection
-            try:
-                test_response = self.openai_client.chat.completions.create(
-                    model="gpt-3.5-turbo",
-                    messages=[{"role": "user", "content": "Test"}],
-                    max_tokens=5
-                )
-                logger.info("✅ OpenAI API connection verified")
-            except Exception as e:
-                logger.warning(f"⚠️ OpenAI API test failed: {e}")
+                self.api_key_configured = False
+                return
                 # Still mark as configured since the client was created successfully
                 logger.info("✅ OpenAI client ready (test skipped)")
                 
