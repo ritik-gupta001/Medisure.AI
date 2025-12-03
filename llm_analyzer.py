@@ -161,19 +161,20 @@ Always maintain professional medical ethics and patient safety as top priorities
                 self.openai_client = OpenAI(api_key=api_key)
                 self.api_key_configured = True
                 logger.info("✅ OpenAI client initialized successfully")
-                
-                # Test the connection
+            except TypeError as type_err:
+                # Handle the 'proxies' parameter issue - try without extra params
+                logger.warning(f"⚠️ TypeError during initialization: {type_err}")
+                logger.info("🔧 Attempting workaround initialization...")
                 try:
-                    test_response = self.openai_client.chat.completions.create(
-                        model="gpt-4o-mini",
-                        messages=[{"role": "user", "content": "Hi"}],
-                        max_tokens=5
-                    )
-                    logger.info("✅ OpenAI API connection verified")
-                    logger.info("✅ OpenAI client ready (test skipped)")
-                except Exception as test_err:
-                    logger.warning(f"⚠️ OpenAI API test failed (but client initialized): {test_err}")
-                    
+                    import openai as oai
+                    oai.api_key = api_key
+                    self.openai_client = oai
+                    self.api_key_configured = True
+                    logger.info("✅ OpenAI configured via global API key (workaround)")
+                except Exception as e2:
+                    logger.error(f"❌ Workaround failed: {e2}")
+                    self.api_key_configured = False
+                    return
             except Exception as init_error:
                 logger.error(f"❌ Failed to initialize OpenAI client: {str(init_error)}")
                 self.api_key_configured = False
