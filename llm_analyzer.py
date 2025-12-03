@@ -194,17 +194,21 @@ Always maintain professional medical ethics and patient safety as top priorities
         
         # Try to get API key directly
         api_key = os.getenv("OPENAI_API_KEY")
+        logger.info(f"🔑 API key check: {'Found (' + str(len(api_key)) + ' chars)' if api_key else 'NOT FOUND'}")
+        
         if not api_key:
-            logger.warning("No API key found, using fallback")
+            logger.warning("❌ No API key found, using fallback")
             return self._create_fallback_analysis(document_text)
         
         try:
             # Create OpenAI client on-demand to avoid initialization issues
+            logger.info("🔧 Attempting to create OpenAI client...")
             from openai import OpenAI
             client = OpenAI(api_key=api_key)
             logger.info("✅ Created OpenAI client for this analysis")
             
             # Get relevant medical context
+            logger.info("📚 Getting medical context...")
             medical_context = self.knowledge_base.get_medical_context(document_text)
             
             # Create comprehensive analysis prompt
