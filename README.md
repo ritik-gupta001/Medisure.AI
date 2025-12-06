@@ -131,15 +131,6 @@ cd frontend
 npm run build
 ```
 
-### 6️⃣ Access the Application
-
-Once both servers are running:
-- **🌐 Frontend UI**: http://localhost:3000
-- **⚙️ Backend API**: http://localhost:8000
-- **📚 API Docs**: http://localhost:8000/docs
-
----
-
 ## 📖 Usage
 
 1. **Upload Medical Document**: Drag & drop or click to upload PDF/image files
@@ -229,15 +220,7 @@ npm run build  # Creates optimized production build
 - 🏥 **Medical Scan Effect**: Hospital equipment-inspired scan animations
 - ✨ **Shimmer Effects**: Professional loading and highlight effects
 
-### Teal Color Theme
-- **Primary Teal**: `#14b8a6` - Modern medical aesthetic
-- **Dark Teal**: `#0d9488` - Professional accents
-- **Full Spectrum**: 50-900 shade range for versatile UI
-- **Dark/Light Mode**: Automatic theme persistence with smooth transitions
-- **Accessible**: WCAG compliant color contrast ratios
-
 ### Component Features
-- 🏥 **Hospital Logo**: Animated medical cross with heartbeat indicator
 - 📤 **Drag & Drop Upload**: Intuitive file upload with visual feedback
 - 📊 **Risk Gauge**: Real-time risk assessment with color-coded indicators
 - 📈 **Vital Charts**: Interactive medical data visualization
@@ -477,96 +460,6 @@ This project is licensed under the MIT License.
 npm run test:e2e
 ```
 
-## 🗺️ Roadmap
-
-### ✅ **Phase 1: Foundation** (Completed)
-- [x] PDF document processing and text extraction
-- [x] OpenAI GPT-4o-mini integration
-- [x] React frontend with professional UI
-- [x] FastAPI backend with comprehensive endpoints
-
-### ✅ **Phase 2: Core Features** (Completed)
-- [x] Dynamic AI risk calculation (fixed 85% hallucination issue)
-- [x] Interactive medical visualizations  
-- [x] Professional medical icons and interface
-- [x] Real-time analysis with proper error handling
-
-### ✅ **Phase 3: Advanced Features** (Completed)
-- [x] 🌙 Dark/Light mode theme system with persistence
-- [x] 📥 Multi-format report downloads (PDF, TXT, JSON)
-- [x] ⚡ Performance optimization and timeout improvements
-- [x] 🧹 Code cleanup and component optimization
-- [x] 🏥 Professional SOAP medical reports with AI generation
-- [x] 👥 Patient-friendly health explanations
-- [x] 🎨 7-level color coding system (Critical to Optimal)
-- [x] 🩺 Intelligent medical icon categorization system
-
-### 🔄 **Phase 4: Enhancements** (In Progress)
-- [ ] 📱 Enhanced mobile responsiveness
-- [ ] 🔔 Smart alerts and notifications
-- [ ] 💊 Advanced medication interpretation
-- [ ] 🌍 Multi-language support
-
-### 🎯 **Phase 5: Production** (Planned)
-- [ ] ☁️ Cloud deployment and scaling
-- [ ] 🔐 Enhanced security and HIPAA compliance
-- [ ] 🏥 Healthcare system integrations
-- [ ] 📊 Advanced analytics dashboard
-
-### 🚀 **Recent Achievements**
-- **Fixed Risk Hallucination**: Eliminated hardcoded 85% risk values with dynamic AI calculation
-- **Theme System**: Complete dark/light mode with user preference persistence  
-- **Download Functionality**: Professional report generation in multiple formats
-- **Performance Optimization**: Improved analysis speed and reliability
-- **Clean Architecture**: Removed unused components and optimized codebase
-
-## 🔧 Recent Improvements
-
-### 🎯 **Major Bug Fixes**
-- **Fixed 85% Risk Hallucination**: The application was showing hardcoded 85% risk values regardless of actual content. Now features dynamic AI-calculated percentages that vary realistically (e.g., 68-78% for high risk, 10-15% for low risk)
-- **Enhanced OpenAI Integration**: Improved prompts to specifically request percentage calculations from GPT-4o-mini
-- **Performance Optimization**: Increased API timeouts and optimized analysis speed
-
-### 🌟 **New Features**
-- **🌙 Complete Theme System**: Dark/light mode toggle with localStorage persistence and system preference detection
-- **📥 Multi-format Downloads**: Professional report generation in PDF/HTML, TXT, and JSON formats
-- **🏥 SOAP Medical Reports**: Professional doctor-style assessment format with AI-generated content
-- **👥 Patient Explanations**: Clear, comprehensive health summaries in plain language
-- **🎨 Enhanced Color Coding**: 7-level severity system from Critical (red) to Optimal (emerald)
-- **🩺 Smart Medical Icons**: Intelligent categorization with 6+ medical icon types
-- **🎨 Enhanced UI**: Theme-aware components with smooth transitions and professional styling
-- **🧹 Code Cleanup**: Removed unused components (SHAPVisualization, DoctorSummary) and optimized project structure
-
-### ⚡ **Performance Enhancements**
-- **Faster Analysis**: Optimized OpenAI API calls with proper timeout handling
-- **Better Error Handling**: Robust fallback systems for AI analysis
-- **Cleaner Codebase**: Removed unnecessary files and improved project organization
-- **Responsive Design**: Better mobile and desktop compatibility
-
-## 🎯 How to Use New Features
-
-### 🌙 Theme Toggle
-- Look for the 🌙/☀️ button in the interface
-- Toggle between dark and light modes
-- Preference is automatically saved and restored
-
-### 📥 Download Reports  
-- After analysis, find the download button
-- Choose from PDF, TXT, or JSON formats
-- Reports include patient info, analysis, and recommendations
-
-### 🏥 Professional Medical Reports
-- Click "Generate & Download Report" after analysis
-- Get SOAP format reports (Subjective, Objective, Assessment, Plan)
-- View patient-friendly explanations alongside clinical assessments
-- See color-coded severity indicators and medical icons
-- Download as print-ready HTML/PDF with full documentation
-
-### ⚡ Dynamic Risk Assessment
-- Upload any medical PDF
-- See realistic risk percentages based on actual content
-- Risk values now vary appropriately instead of showing constant 85%
-
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -621,8 +514,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ![AI](https://img.shields.io/badge/OpenAI-GPT--4o--mini-412991?style=for-the-badge&logo=openai)
 ![React](https://img.shields.io/badge/React-18.2-61dafb?style=for-the-badge&logo=react)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.104-009688?style=for-the-badge&logo=fastapi)
-
-**✨ Now with Hospital-Grade Animations, Teal Theme & Enhanced AI Analysis ✨**
 
 *Made with ❤️ by Ritik Gupta*
 
